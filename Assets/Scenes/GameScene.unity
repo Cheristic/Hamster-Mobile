@@ -463,6 +463,7 @@ GameObject:
   - component: {fileID: 382889044}
   - component: {fileID: 382889043}
   - component: {fileID: 382889045}
+  - component: {fileID: 382889046}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -513,6 +514,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8ca486618663c428dded9cf4b2066f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &382889046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382889042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3019458cf7c06934ea60ead627108377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 56682039}
+  pointsTilSpeedUp: 3
 --- !u!1 &400092786
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,8 +986,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wedgePrefabs:
   - {fileID: 7508632882225528069, guid: 5213282b5b2163d48814b5873258e2fd, type: 3}
+  - {fileID: 7508632882225528069, guid: 7d0a895b0b4ccb445b207b8b50335814, type: 3}
   - {fileID: 7508632882225528069, guid: a79d5e85ea6f3f74aa06b16b26c56ca8, type: 3}
-  rotationTilNewWedge: 0.45
+  - {fileID: 7508632882225528069, guid: cf97d7c0d7abd8e4e8fa2880d482b6b7, type: 3}
+  rotationTilNewWedge: 0.55
 --- !u!1 &621875229
 GameObject:
   m_ObjectHideFlags: 0
@@ -1107,12 +1124,12 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 348122755}
           m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-          m_MethodName: ChangeMenu
+          m_MethodName: CloseMenu
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
+            m_IntArgument: 5
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -1215,7 +1232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 155fc8f1f0457fa4ca08b19205ba7dac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingRotationSpeed: 0.34
+  startingRotationSpeed: 0.6
   speedUpAmount: 0.06
   origin: {x: 0, y: 0, z: 0}
 --- !u!1 &626644628
@@ -1356,8 +1373,8 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 932.4, y: 215.1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!61 &992563243
-BoxCollider2D:
+--- !u!58 &992563243
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1385,22 +1402,12 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 221.2439}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 697.88, y: 196.90356}
-  m_EdgeRadius: 0
+  m_Radius: 446.5
 --- !u!1 &1143903361
 GameObject:
   m_ObjectHideFlags: 0
@@ -1461,7 +1468,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1308082041
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: 763710574, guid: 3482943d332360640885e4a8b8e3a968, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1691,7 +1698,6 @@ GameObject:
   - component: {fileID: 1542272139}
   - component: {fileID: 1542272138}
   - component: {fileID: 1542272137}
-  - component: {fileID: 1542272140}
   m_Layer: 5
   m_Name: Score (UI)
   m_TagString: Untagged
@@ -1782,19 +1788,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1542272140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1542272135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3019458cf7c06934ea60ead627108377, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scoreText: {fileID: 56682039}
 --- !u!1 &1589900447
 GameObject:
   m_ObjectHideFlags: 0
@@ -2147,7 +2140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tap To Start
+  m_text: "Tap Anywhere \nTo Start"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8bd67948dfc4c2347a0ceef74ff89d7e, type: 2}
   m_sharedMaterial: {fileID: -7313117226432236839, guid: 8bd67948dfc4c2347a0ceef74ff89d7e, type: 2}

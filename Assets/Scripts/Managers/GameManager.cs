@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     public WedgeSpawner wedgeSpawner;
     public Wheel wheel;
-    [SerializeField] HamsterControls hamster;
+    public HamsterControls hamster;
 
     void Awake()
     {

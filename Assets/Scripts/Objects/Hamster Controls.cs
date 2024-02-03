@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,26 +49,23 @@ public class HamsterControls : MonoBehaviour
     {
         touchStartPos = pos;
     }
+    private void Update()
+    {
+        if (GameManager.Main.gameRunning && InputManager.Main.input.Touch.TouchPress.inProgress)
+        {
+            TryJump();
+        }
+    }
     private void EndTouch(Vector2 pos, float time)
     {
         Vector2 dif = touchStartPos - pos;
-        if (dif.magnitude < touchDistanceToFall)
-        {
-            TryJump();
-        } else
+        if (dif.magnitude >= touchDistanceToFall)
         {
             TryFall();
         }
     }
 
-    private void Update()
-    {
-        // DEBUG
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            TryJump();
-        }
-    }
+
 
     public bool TryJump()
     {
@@ -80,9 +78,11 @@ public class HamsterControls : MonoBehaviour
         return false;
     }
 
+    public static event Action HamsterFall;
     private void TryFall()
     {
-        Debug.Log("fall");
+        rb.velocity = new Vector2(0, -jumpHeight);
+        HamsterFall?.Invoke();
     }
 
 

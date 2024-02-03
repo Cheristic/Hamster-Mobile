@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8088881299525109858}
   - component: {fileID: 3246107108713297071}
   - component: {fileID: 456673038981122181}
+  - component: {fileID: 1948654844165274219}
   m_Layer: 7
   m_Name: platform pivoter (5)
   m_TagString: Untagged
@@ -146,6 +147,18 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &1948654844165274219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146052280917371678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdc9b95eafa1954ba4a046192c3dcd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2865127391818828883
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,6 +171,7 @@ GameObject:
   - component: {fileID: 3800745912591458402}
   - component: {fileID: 7529968950403113523}
   - component: {fileID: 2772765164463307931}
+  - component: {fileID: 328473291345550288}
   m_Layer: 7
   m_Name: platform pivoter
   m_TagString: Untagged
@@ -292,6 +306,18 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &328473291345550288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865127391818828883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdc9b95eafa1954ba4a046192c3dcd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4876127371216725252
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,6 +367,7 @@ GameObject:
   - component: {fileID: 7638875139621159042}
   - component: {fileID: 683581545913088662}
   - component: {fileID: 3222208438967052804}
+  - component: {fileID: 913563549310636484}
   m_Layer: 7
   m_Name: platform pivoter (4)
   m_TagString: Untagged
@@ -475,6 +502,18 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &913563549310636484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5618507640336550862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdc9b95eafa1954ba4a046192c3dcd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6470136944724051010
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,6 +526,7 @@ GameObject:
   - component: {fileID: 1462339663336020594}
   - component: {fileID: 252432816569802032}
   - component: {fileID: 7457692816800858765}
+  - component: {fileID: 5259964329325292252}
   m_Layer: 7
   m_Name: platform pivoter (1)
   m_TagString: Untagged
@@ -621,6 +661,18 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &5259964329325292252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6470136944724051010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdc9b95eafa1954ba4a046192c3dcd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8134076581302880188
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +685,7 @@ GameObject:
   - component: {fileID: 1741405431098302365}
   - component: {fileID: 746454998750812040}
   - component: {fileID: 2018861743105651749}
+  - component: {fileID: 9138621850098904542}
   m_Layer: 7
   m_Name: platform pivoter (3)
   m_TagString: Untagged
@@ -767,6 +820,18 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &9138621850098904542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8134076581302880188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdc9b95eafa1954ba4a046192c3dcd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9084572157609123103
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +844,7 @@ GameObject:
   - component: {fileID: 3406919707927475582}
   - component: {fileID: 7343857554446578895}
   - component: {fileID: 6698803967623987410}
+  - component: {fileID: 1671260940811348544}
   m_Layer: 7
   m_Name: platform pivoter (2)
   m_TagString: Untagged
@@ -913,3 +979,15 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &1671260940811348544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9084572157609123103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdc9b95eafa1954ba4a046192c3dcd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

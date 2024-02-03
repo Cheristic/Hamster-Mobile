@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     public static InputManager Main { get; private set; }
-    HamsterInput input;
+    public HamsterInput input;
     public static event Action<Vector2, float> OnTouchStart;
     public static event Action<Vector2, float> OnTouchEnd;
     private void Awake()

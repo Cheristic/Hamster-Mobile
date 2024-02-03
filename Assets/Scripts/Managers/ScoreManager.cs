@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Main { get; private set; }
     private int score;
     [SerializeField] TMP_Text scoreText;
+    [SerializeField] float pointsTilSpeedUp = 3;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class ScoreManager : MonoBehaviour
         if (!GameManager.Main.gameRunning) return;
         score++;
         scoreText.text = score.ToString();
-        if (score % 5 == 0)
+        if (score % pointsTilSpeedUp == 0)
         {
             SpeedUp?.Invoke();
         }

@@ -16,8 +16,8 @@ public class Wheel : MonoBehaviour
         ScoreManager.SpeedUp += OnSpeedUp;
         rotationSpeed = startingRotationSpeed;
     }
-    // Update is called once per frame
-    void Update()
+
+    void FixedUpdate()
     {
         transform.RotateAround(origin, Vector3.forward, -rotationSpeed);
     }

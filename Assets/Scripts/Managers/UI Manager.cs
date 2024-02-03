@@ -25,10 +25,10 @@ public class UIManager : MonoBehaviour
         ChangeMenu(0);
         GameManager.gameStart += OnGameStart;
         GameManager.gameEnd += OnGameEnd;
+        GameManager.newGame += OnNewGame;
     }
     private void OnGameStart() => ChangeMenu(3);
     private void OnGameEnd() => ChangeMenu(4);
-
 
     public void ChangeMenu(int menuIndex)
     {
@@ -38,6 +38,23 @@ public class UIManager : MonoBehaviour
         }
         currMenu = menus[menuIndex];
         currMenu.OnMenuEnter(this);
+    }
+    public void CloseMenu(int menuIndex)
+    {
+        if (currMenu != null)
+        {
+            currMenu.OnMenuExit();
+        }
+    }
+
+    // Wait until hamster lands to allow tapping
+    private void OnNewGame() => StartCoroutine(WaitForHamster());
+    private IEnumerator WaitForHamster()
+    {
+        yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => GameManager.Main.hamster.transform.position.y < -8.38f);
+        Debug.Log(GameManager.Main.hamster.transform.position.y);
+        ChangeMenu(0);
     }
 }
 
