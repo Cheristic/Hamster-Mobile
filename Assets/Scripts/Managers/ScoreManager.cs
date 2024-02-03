@@ -30,10 +30,15 @@ public class ScoreManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
+    public static event Action SpeedUp;
     public void IncreaseScore()
     {
         if (!GameManager.Main.gameRunning) return;
         score++;
         scoreText.text = score.ToString();
+        if (score % 5 == 0)
+        {
+            SpeedUp?.Invoke();
+        }
     }
 }

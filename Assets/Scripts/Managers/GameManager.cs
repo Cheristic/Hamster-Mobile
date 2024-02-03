@@ -7,8 +7,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Main { get; private set; }
     public bool gameRunning;
+    [Header("References")]
     public WedgeSpawner wedgeSpawner;
     public Wheel wheel;
+    [SerializeField] HamsterControls hamster;
 
     void Awake()
     {
@@ -28,8 +30,11 @@ public class GameManager : MonoBehaviour
     public static event Action newGame;
     public void StartGame()
     {
-        gameRunning = true;
-        gameStart?.Invoke();
+        if (hamster.TryJump())
+        {
+            gameRunning = true;
+            gameStart?.Invoke();
+        }
     }
 
     public void EndGame() // Called when hamster hits a damaging obstacle

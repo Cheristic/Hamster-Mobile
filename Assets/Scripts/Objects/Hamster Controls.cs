@@ -30,7 +30,6 @@ public class HamsterControls : MonoBehaviour
     {
         InputManager.OnTouchStart += StartTouch;
         InputManager.OnTouchEnd += EndTouch;
-        TryJump();
     }
     private void OnGameEnd()
     {
@@ -40,6 +39,7 @@ public class HamsterControls : MonoBehaviour
     }
     private void OnNewGame()
     {
+        transform.position = new Vector2(0, 7);
         gameObject.SetActive(true); 
     }
 
@@ -69,13 +69,15 @@ public class HamsterControls : MonoBehaviour
         }
     }
 
-    public void TryJump()
+    public bool TryJump()
     {
         if (IsGrounded && canJump)
         {
             rb.velocity = new Vector2(0, jumpHeight);
             canJump = false;
+            return true;
         }
+        return false;
     }
 
     private void TryFall()

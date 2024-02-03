@@ -23,8 +23,10 @@ public class UIManager : MonoBehaviour
         };
 
         ChangeMenu(0);
+        GameManager.gameStart += OnGameStart;
         GameManager.gameEnd += OnGameEnd;
     }
+    private void OnGameStart() => ChangeMenu(3);
     private void OnGameEnd() => ChangeMenu(4);
 
 
