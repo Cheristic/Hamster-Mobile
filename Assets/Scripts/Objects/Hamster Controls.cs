@@ -55,15 +55,27 @@ public class HamsterControls : MonoBehaviour
     {
         if (GameManager.Main.gameRunning && InputManager.Main.input.Touch.TouchPress.inProgress)
         {
+            StartCoroutine(TapJumpDelay());
+        }
+    }
+    private IEnumerator TapJumpDelay()
+    {
+        yield return new WaitForSeconds(0.05f);
+        if (GameManager.Main.gameRunning && InputManager.Main.input.Touch.TouchPress.inProgress)
+        {
             TryJump();
         }
     }
+
     private void EndTouch(Vector2 pos, float time)
     {
         Vector2 dif = touchStartPos - pos;
         if (dif.magnitude >= touchDistanceToFall)
         {
             TryFall();
+        } else
+        {
+            TryJump();
         }
     }
 

@@ -6,11 +6,10 @@ using static UnityEngine.UI.Image;
 
 public class Wedge : MonoBehaviour
 {
-    [SerializeField] double rotationTilSwitchLayers;
     public double rotationTilSpawnNext;
-    [SerializeField] double rotationTilCleared = .99;
-    [SerializeField] double rotationTilLooped;
-    
+    public double rotationTilCleared1;
+    public double rotationTilCleared2;
+
     SpriteRenderer[] renderers;
     private void Awake()
     {
@@ -34,19 +33,23 @@ public class Wedge : MonoBehaviour
 
     IEnumerator CheckForRotation()
     {
-        yield return new WaitUntil(() => transform.rotation.z < -rotationTilSwitchLayers);
+        yield return new WaitUntil(() => transform.rotation.z < -.999);
         foreach (var ren in renderers)
         {
             ren.sortingLayerID = -1308082041; // Place all obstacles in maskable layer
         }
-        yield return new WaitUntil(() => transform.rotation.z < -.999);
-        yield return new WaitUntil(() => transform.rotation.z > -rotationTilCleared);
+        yield return new WaitUntil(() => transform.rotation.z > rotationTilCleared1);
         ScoreManager.Main.IncreaseScore();
+        if (rotationTilCleared2 != 0) { // For obstacles long enough to reward 2
+            yield return new WaitUntil(() => transform.rotation.z > rotationTilCleared2);
+            ScoreManager.Main.IncreaseScore();
+        }
+
         foreach (var ren in renderers)
         {
             ren.sortingLayerID = -33730133; // Place all obstacles in maskable layer
         }
-        yield return new WaitUntil(() => transform.rotation.z > rotationTilLooped); // After full rotation
+        yield return new WaitUntil(() => transform.rotation.z > .999);
         Despawn();
     }
 

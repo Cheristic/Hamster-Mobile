@@ -81,7 +81,7 @@ public class WedgeSpawner : MonoBehaviour
                 Wedge wed = w.GetComponent<Wedge>();
                 wed.Spawn();
                 yield return new WaitUntil(() => !GameManager.Main.gameRunning ||
-                w.transform.rotation.z < -wed.rotationTilSpawnNext);
+                w.transform.rotation.z < wed.rotationTilSpawnNext);
             }
             firstType = false;
         }

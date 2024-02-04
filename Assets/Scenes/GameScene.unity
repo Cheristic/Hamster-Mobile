@@ -986,19 +986,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wedgeCategories:
   - category: 0
-    min: 3
-    max: 5
+    min: 8
+    max: 12
     wedges:
     - {fileID: 7508632882225528069, guid: 7d0a895b0b4ccb445b207b8b50335814, type: 3}
     - {fileID: 7508632882225528069, guid: a79d5e85ea6f3f74aa06b16b26c56ca8, type: 3}
     - {fileID: 7508632882225528069, guid: 5213282b5b2163d48814b5873258e2fd, type: 3}
+    - {fileID: 7508632882225528069, guid: 2f25b4ae15331f04e8497752a2b4be2c, type: 3}
   - category: 1
     min: 4
     max: 6
     wedges:
-    - {fileID: 7508632882225528069, guid: e7f08fe6a95456f43961903d8caac6a0, type: 3}
-    - {fileID: 7508632882225528069, guid: 64b92b6877d261d4084468c4ed144e26, type: 3}
-    - {fileID: 7508632882225528069, guid: a858e0933f7299e4081982e2d0495d2c, type: 3}
+    - {fileID: 7508632882225528069, guid: ebf65fe53da73674082abf2f26010dee, type: 3}
+    - {fileID: 7508632882225528069, guid: b1bb894ccf98aef44b397a0dd1e531bc, type: 3}
   rotationTilNewWedge: 0.55
 --- !u!1 &621875229
 GameObject:
