@@ -78,9 +78,10 @@ public class WedgeSpawner : MonoBehaviour
             for (; GameManager.Main.gameRunning && wedgesToSpawn > 0; wedgesToSpawn--)
             {
                 GameObject w = GetWedge(currWedgeChoice);
-                w.GetComponent<Wedge>().Spawn();
+                Wedge wed = w.GetComponent<Wedge>();
+                wed.Spawn();
                 yield return new WaitUntil(() => !GameManager.Main.gameRunning ||
-                w.transform.rotation.z < -rotationTilNewWedge);
+                w.transform.rotation.z < -wed.rotationTilSpawnNext);
             }
             firstType = false;
         }

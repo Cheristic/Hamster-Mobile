@@ -229,8 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1f7e3ff440866469c7e641a4399e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationTilCleared: 0.99
-  rotationTilLooped: 0.55
+  rotationTilSwitchLayers: 0.85
+  rotationTilSpawnNext: 0.55
+  rotationTilCleared: 0.35
+  rotationTilLooped: 0.75
 --- !u!1001 &14216226916915494
 PrefabInstance:
   m_ObjectHideFlags: 0

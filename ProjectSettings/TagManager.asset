@@ -50,6 +50,9 @@ TagManager:
   - name: Hamster
     uniqueID: 2986885255
     locked: 0
+  - name: PreHamster
+    uniqueID: 1409643187
+    locked: 0
   - name: PastHamster
     uniqueID: 4261237163
     locked: 0
