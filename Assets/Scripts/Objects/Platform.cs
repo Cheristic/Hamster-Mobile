@@ -6,7 +6,7 @@ public class Platform : MonoBehaviour
 {
     private Collider2D _collider;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _collider = GetComponent<Collider2D>();
     }

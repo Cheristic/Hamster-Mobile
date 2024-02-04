@@ -13,6 +13,8 @@ public class HamsterControls : MonoBehaviour
 
     [Header("Controls")]
     [SerializeField] private float touchDistanceToFall = 30f;
+    [SerializeField] private float jumpLimitTime = 1f;
+    [SerializeField] private float jumpBoost = 200f;
 
     Rigidbody2D rb;
     Collider2D collide;
@@ -69,13 +71,28 @@ public class HamsterControls : MonoBehaviour
 
     public bool TryJump()
     {
-        if (IsGrounded && canJump)
+        if (canJump && IsGrounded)
         {
-            rb.velocity = new Vector2(0, jumpHeight);
             canJump = false;
+            rb.velocity = new Vector2(0, jumpHeight);
+            StartCoroutine(Jump());
             return true;
         }
         return false;
+    }
+    bool addJumpBoost;
+    private IEnumerator Jump()
+    {
+        float jumpTime = 0f;
+        // while moving up && finger is tapped && less than limit
+        while(!canJump && InputManager.Main.input.Touch.TouchPress.inProgress && jumpTime < jumpLimitTime)
+        {
+            jumpTime += Time.deltaTime;
+            addJumpBoost = true;
+            yield return null;
+        }
+        addJumpBoost = false;
+
     }
 
     public static event Action HamsterFall;
@@ -88,7 +105,8 @@ public class HamsterControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (rb.velocity.y < 0)
+        if (addJumpBoost) rb.AddForce(new Vector2(0, jumpBoost));
+        if (rb.velocity.y <= 0)
         {
             canJump = true;
         }
@@ -99,8 +117,13 @@ public class HamsterControls : MonoBehaviour
         get
         {
             Vector3 pos = new Vector3(collide.bounds.center.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
-            //Debug.DrawRay(pos, Vector2.down*(bufferDistance), Color.green);
-            return Physics2D.Raycast(pos, Vector2.down, bufferDistance, obstaclesLayerMask);
+            //Debug.DrawRay(pos, Vector2.down*(bufferDistance), Color.green
+            RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, bufferDistance, obstaclesLayerMask);
+            if (hit.collider != null && !hit.collider.CompareTag("Damager"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 

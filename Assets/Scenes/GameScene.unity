@@ -1513,6 +1513,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   touchDistanceToFall: 30
+  jumpLimitTime: 0.3
+  jumpBoost: 27
 --- !u!61 &1143903365
 BoxCollider2D:
   m_ObjectHideFlags: 0
