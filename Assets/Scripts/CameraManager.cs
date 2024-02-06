@@ -6,24 +6,71 @@ public class CameraManager : MonoBehaviour
 {
     public float sceneWidth;
     Camera _camera;
-    Animator animator;
-    void Start()
+    public AnimationCurve MoveCurve;
+    [SerializeField] float zoomTime;
+    private float baseView, zoomedView;
+    [SerializeField] float zoomedXPos;
+    void Awake()
     {
         _camera = GetComponent<Camera>();
-        animator = GetComponent<Animator>();
         OptionsMenu.EnterOptionsMenu += ChangeCameraAngle;
-    }
 
-    private void ChangeCameraAngle(bool zoom)
-    {
-        Debug.Log(animator);
-        animator.SetTrigger("OptionsZoom");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         float unitsPerPixel = sceneWidth / Screen.width;
-        _camera.orthographicSize = 0.5f * unitsPerPixel * Screen.height;
+        baseView = 0.5f * unitsPerPixel * Screen.height;
+        zoomedView = baseView / 2;
+        _camera.orthographicSize = baseView;
+    }
+
+    IEnumerator zooming = null;
+    private void ChangeCameraAngle(bool entering)
+    {
+        if (zooming != null) StopCoroutine(zooming);
+        StartCoroutine(zooming = ZoomAnimation(entering));
+    }
+
+    // https://stackoverflow.com/questions/64638885/how-do-i-add-easing-to-a-scripted-transform-animation-in-unity
+    float timeProgressed = 0f;
+    private IEnumerator ZoomAnimation(bool zoomIn)
+    {
+        if (timeProgressed != 0f)
+        {
+            // Animation has been interrupted, give inverse
+            timeProgressed = zoomTime - timeProgressed;
+        }
+
+        while (timeProgressed < zoomTime)
+        {
+            var percentCompleted = Mathf.Clamp01(timeProgressed / zoomTime);
+            var scaledZoomAmount = MoveCurve.Evaluate(percentCompleted);
+
+            if (zoomIn) //Go from base to zoomed
+            {
+                _camera.orthographicSize = Mathf.Lerp(baseView, zoomedView, scaledZoomAmount);
+                transform.position = new Vector3(Mathf.Lerp(0f, zoomedXPos, scaledZoomAmount), 0, transform.position.z);
+            } else // Go from zoomed to base
+            {
+                _camera.orthographicSize = Mathf.Lerp(zoomedView, baseView, scaledZoomAmount);
+                transform.position = new Vector3(Mathf.Lerp(zoomedXPos, 0f, scaledZoomAmount), 0, transform.position.z);
+            }
+
+            yield return null;
+            timeProgressed += Time.deltaTime;
+        }
+
+        // Finalize true values
+        if (zoomIn) //Go from base to zoomed
+        {
+            _camera.orthographicSize = zoomedView;
+            transform.position = new Vector3(zoomedXPos, 0, transform.position.z);
+        }
+        else // Go from zoomed to base
+        {
+            _camera.orthographicSize = baseView;
+            transform.position = new Vector3(0, 0, transform.position.z);
+        }
+        // Reset checker
+        zooming = null;
+        timeProgressed = 0f;
+
     }
 }

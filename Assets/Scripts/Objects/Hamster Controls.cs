@@ -43,7 +43,9 @@ public class HamsterControls : MonoBehaviour
     private void OnNewGame()
     {
         transform.position = new Vector2(0, 7);
-        gameObject.SetActive(true); 
+        gameObject.SetActive(true);
+        rb.velocity = new Vector2(0, -2);
+
     }
 
     private Vector2 touchStartPos;
@@ -92,7 +94,7 @@ public class HamsterControls : MonoBehaviour
         }
         return false;
     }
-    bool addJumpBoost;
+    bool addJumpBoost = false;
     private IEnumerator Jump()
     {
         float jumpTime = 0f;
@@ -117,7 +119,10 @@ public class HamsterControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (addJumpBoost) rb.AddForce(new Vector2(0, jumpBoost));
+        if (addJumpBoost)
+        {
+            rb.AddForce(new Vector2(0, jumpBoost));
+        }
         if (rb.velocity.y <= 0)
         {
             canJump = true;
