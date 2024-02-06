@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     public float sceneWidth;
+    public float zoomedSceneHeight;
     Camera _camera;
     public AnimationCurve MoveCurve;
     [SerializeField] float zoomTime;
@@ -17,13 +18,15 @@ public class CameraManager : MonoBehaviour
 
         float unitsPerPixel = sceneWidth / Screen.width;
         baseView = 0.5f * unitsPerPixel * Screen.height;
-        zoomedView = baseView / 2;
+        zoomedView = zoomedSceneHeight * 0.5f;
         _camera.orthographicSize = baseView;
     }
 
     IEnumerator zooming = null;
     private void ChangeCameraAngle(bool entering)
     {
+        if (OptionsHandler.Main.zoomedMode) return; // Don't zoom out if on zoomedMode
+
         if (zooming != null) StopCoroutine(zooming);
         StartCoroutine(zooming = ZoomAnimation(entering));
     }
