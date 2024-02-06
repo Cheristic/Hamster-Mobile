@@ -75,11 +75,17 @@ public class WedgeSpawner : MonoBehaviour
             }
 
             int wedgesToSpawn = Random.Range(currWedgeChoice.min, currWedgeChoice.max + 1);
-            for (; GameManager.Main.gameRunning && wedgesToSpawn > 0; wedgesToSpawn--)
+            for (int i = 0; GameManager.Main.gameRunning && i < wedgesToSpawn ; i++)
             {
                 GameObject w = GetWedge(currWedgeChoice);
                 Wedge wed = w.GetComponent<Wedge>();
-                wed.Spawn();
+                if (firstType && i == 0) // Make first wedge spawn closer
+                {
+                    wed.Spawn(-30f);
+                } else
+                {
+                    wed.Spawn(0);
+                }
                 yield return new WaitUntil(() => !GameManager.Main.gameRunning ||
                 w.transform.rotation.z < wed.rotationTilSpawnNext);
             }

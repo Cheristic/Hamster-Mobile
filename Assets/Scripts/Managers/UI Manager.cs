@@ -3,14 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
+
 
 public class UIManager : MonoBehaviour
 {
-    public Canvas[] menuCanvases;
+    public MenuGroup[] menuGroups;
     [HideInInspector] public List<Menu> menus;
     private Menu currMenu;
 
-    // Start is called before the first frame update
+    [Serializable]
+    public struct MenuGroup
+    {
+        public Canvas[] menus;
+    }
+
+
     void Start()
     {
         menus = new()
@@ -78,25 +86,32 @@ public class MainMenu : Menu
 {
     protected override void OnEnter()
     {
-        ui.menuCanvases[0].gameObject.SetActive(true);
+        ui.menuGroups[0].menus[0].gameObject.SetActive(true);
+        ui.menuGroups[0].menus[1].gameObject.SetActive(true);
     }
 
     protected override void OnExit()
     {
-        ui.menuCanvases[0].gameObject.SetActive(false);
+        ui.menuGroups[0].menus[0].gameObject.SetActive(false);
+        ui.menuGroups[0].menus[1].gameObject.SetActive(false);
     }
 }
 
 public class OptionsMenu : Menu
 {
+    public static event Action<bool> EnterOptionsMenu;
     protected override void OnEnter()
     {
-        ui.menuCanvases[1].gameObject.SetActive(true);
+        ui.menuGroups[1].menus[0].gameObject.SetActive(true);
+        ui.menuGroups[1].menus[1].gameObject.SetActive(true);
+        EnterOptionsMenu.Invoke(true);
     }
 
     protected override void OnExit()
     {
-        ui.menuCanvases[1].gameObject.SetActive(false);
+        ui.menuGroups[1].menus[0].gameObject.SetActive(false);
+        ui.menuGroups[1].menus[1].gameObject.SetActive(false);
+        EnterOptionsMenu.Invoke(false);
     }
 }
 
@@ -104,12 +119,12 @@ public class CreditsMenu : Menu
 {
     protected override void OnEnter()
     {
-        ui.menuCanvases[2].gameObject.SetActive(true);
+        ui.menuGroups[2].menus[0].gameObject.SetActive(true);
     }
 
     protected override void OnExit()
     {
-        ui.menuCanvases[2].gameObject.SetActive(false);
+        ui.menuGroups[2].menus[0].gameObject.SetActive(false);
     }
 }
 
@@ -117,13 +132,13 @@ public class InGameMenu : Menu
 {
     protected override void OnEnter()
     {
-        ui.menuCanvases[3].gameObject.SetActive(true);
-        ui.menuCanvases[5].gameObject.SetActive(true);
+        ui.menuGroups[3].menus[0].gameObject.SetActive(true);
+        ui.menuGroups[5].menus[0].gameObject.SetActive(true);
     }
 
     protected override void OnExit()
     {
-        ui.menuCanvases[3].gameObject.SetActive(false);
+        ui.menuGroups[3].menus[0].gameObject.SetActive(false);
     }
 }
 
@@ -131,12 +146,12 @@ public class GameOverMenu : Menu
 {
     protected override void OnEnter()
     {
-        ui.menuCanvases[4].gameObject.SetActive(true);
+        ui.menuGroups[4].menus[0].gameObject.SetActive(true);
     }
 
     protected override void OnExit()
     {
-        ui.menuCanvases[4].gameObject.SetActive(false);
-        ui.menuCanvases[5].gameObject.SetActive(false);
+        ui.menuGroups[4].menus[0].gameObject.SetActive(false);
+        ui.menuGroups[5].menus[0].gameObject.SetActive(false);
     }
 }

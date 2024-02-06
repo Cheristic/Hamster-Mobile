@@ -19,10 +19,10 @@ public class Wedge : MonoBehaviour
     {
         GameManager.newGame += Despawn;
     }
-    public void Spawn()
+    public void Spawn(float rot)
     {
         Debug.Log(renderers[0].sortingLayerID);
-        transform.rotation = Quaternion.Euler(0, 0, 0); // Reset rotation to top
+        transform.rotation = Quaternion.Euler(0, 0, rot); // Reset rotation to top
         gameObject.SetActive(true);
         StartCoroutine(CheckForRotation());
         foreach(var ren in renderers)

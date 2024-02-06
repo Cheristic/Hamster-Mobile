@@ -40,6 +40,7 @@ public class TouchMenu : MonoBehaviour
             if (box.collide.bounds.IntersectRay(ray))
             {
                 box.onTouch.Invoke();
+                return;
             }
         }
     }
