@@ -112,7 +112,7 @@ public class HamsterControls : MonoBehaviour
     public static event Action HamsterFall;
     private void TryFall()
     {
-        rb.velocity = new Vector2(0, -jumpHeight);
+        rb.velocity = new Vector2(rb.velocity.x, -jumpHeight);
         HamsterFall?.Invoke();
     }
 
@@ -127,6 +127,13 @@ public class HamsterControls : MonoBehaviour
         {
             canJump = true;
         }
+        if (Mathf.Abs(transform.position.x) > .01)
+        {
+            float vel = Mathf.Abs(transform.position.x) > 5 ? transform.position.x : transform.position.x*1.5f;
+            rb.velocity = new Vector2(-vel, rb.velocity.y);
+            //transform.position = new Vector2(Mathf.Lerp(transform.position.x, 0, 10f * Time.deltaTime), transform.position.y);
+        }
+
     }
 
     private bool IsGrounded 
@@ -134,9 +141,20 @@ public class HamsterControls : MonoBehaviour
         get
         {
             Vector3 pos = new Vector3(collide.bounds.center.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
-            //Debug.DrawRay(pos, Vector2.down*(bufferDistance), Color.green
             RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, bufferDistance, obstaclesLayerMask);
             if (hit.collider != null && !hit.collider.CompareTag("Damager"))
+            {
+                return true;
+            }
+            Vector3 pos1 = new Vector3(collide.bounds.max.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
+            RaycastHit2D hit1 = Physics2D.Raycast(pos1, Vector2.down, bufferDistance, obstaclesLayerMask);
+            if (hit1.collider != null && !hit1.collider.CompareTag("Damager"))
+            {
+                return true;
+            }
+            Vector3 pos2 = new Vector3(collide.bounds.min.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
+            RaycastHit2D hit2 = Physics2D.Raycast(pos2, Vector2.down, bufferDistance, obstaclesLayerMask);
+            if (hit2.collider != null && !hit2.collider.CompareTag("Damager"))
             {
                 return true;
             }

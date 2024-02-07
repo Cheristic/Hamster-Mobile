@@ -5,7 +5,6 @@ using UnityEngine;
 public class Platform : MonoBehaviour
 {
     private Collider2D _collider;
-    // Start is called before the first frame update
     void Awake()
     {
         _collider = GetComponent<Collider2D>();
@@ -14,7 +13,16 @@ public class Platform : MonoBehaviour
     private void OnEnable()
     {
         HamsterControls.HamsterFall += DisablePlatform;
+        _collider.enabled = false;
+        StartCoroutine(HandleColliderActive());
+    }
+    private IEnumerator HandleColliderActive()
+    {
+        yield return new WaitUntil(() => transform.position.x > 0);
         _collider.enabled = true;
+        yield return new WaitUntil(() => transform.position.x < 0);
+        yield return new WaitUntil(() => transform.position.x > 0);
+        _collider.enabled = false;
     }
     private void OnDisable()
     {
