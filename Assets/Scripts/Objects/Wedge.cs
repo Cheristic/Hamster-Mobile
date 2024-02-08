@@ -9,6 +9,7 @@ public class Wedge : MonoBehaviour
     public double rotationTilSpawnNext;
     public double rotationTilCleared1;
     public double rotationTilCleared2;
+    public double rotationTilSwitchLayer;
 
     SpriteRenderer[] renderers;
     private void Awake()
@@ -21,7 +22,6 @@ public class Wedge : MonoBehaviour
     }
     public void Spawn(float rot)
     {
-        Debug.Log(renderers[0].sortingLayerID);
         transform.rotation = Quaternion.Euler(0, 0, rot); // Reset rotation to top
         gameObject.SetActive(true);
         StartCoroutine(CheckForRotation());
@@ -44,7 +44,7 @@ public class Wedge : MonoBehaviour
             yield return new WaitUntil(() => transform.rotation.z > rotationTilCleared2);
             ScoreManager.Main.IncreaseScore();
         }
-
+        yield return new WaitUntil(() => transform.rotation.z > rotationTilSwitchLayer);
         foreach (var ren in renderers)
         {
             ren.sortingLayerID = -33730133; // Place all obstacles in maskable layer

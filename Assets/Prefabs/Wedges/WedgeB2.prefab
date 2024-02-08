@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 7534939019710821861}
   - component: {fileID: 4278123836800570789}
   m_Layer: 0
-  m_Name: WedgeB1
+  m_Name: WedgeB2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,7 +354,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7860982255890020851, guid: 0f9dc6f295197a6419f5c9d151206f65, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.76
+      value: -3.02
       objectReference: {fileID: 0}
     - target: {fileID: 7860982255890020851, guid: 0f9dc6f295197a6419f5c9d151206f65, type: 3}
       propertyPath: m_LocalPosition.z
@@ -474,7 +474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1330601218026631348, guid: 339b69dbed20cc248b3e840ca3e243d4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.3
+      value: -4.33
       objectReference: {fileID: 0}
     - target: {fileID: 1330601218026631348, guid: 339b69dbed20cc248b3e840ca3e243d4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -536,7 +536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1330601218026631348, guid: 339b69dbed20cc248b3e840ca3e243d4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.36
+      value: -3.56
       objectReference: {fileID: 0}
     - target: {fileID: 1330601218026631348, guid: 339b69dbed20cc248b3e840ca3e243d4, type: 3}
       propertyPath: m_LocalPosition.z

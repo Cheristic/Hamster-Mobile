@@ -14,8 +14,10 @@ public class WedgeSpawner : MonoBehaviour
 
     public enum WedgeCategory
     {
+        Test,
         Normal,
-        Divided
+        Divided,
+        Beam
     }
     [Serializable]
     public struct WedgeChoice
@@ -59,19 +61,29 @@ public class WedgeSpawner : MonoBehaviour
     IEnumerator SpawnWedge()
     {
         bool firstType = true;
-        // Always start with normal
+        bool normalTypeNext = true;
+        // Always start with test if not empty or normal
         WedgeChoice currWedgeChoice = wedgeCategories[0];
+
+
         while (GameManager.Main.gameRunning)
         {
-            if (!firstType) // Ensure a different wedge category is chosen
+            if (!normalTypeNext) // Ensure a different wedge category is chosen
             {
                 int newWedge;
                 do
                 {
-                    newWedge = Random.Range(0, wedgeCategories.Length);
+                    newWedge = Random.Range(2, wedgeCategories.Length);
                 } while (newWedge == (int)currWedgeChoice.category);
                 // Choose wedge category and number of consecutive wedges of category to spawn
                 currWedgeChoice = wedgeCategories[newWedge];
+                normalTypeNext = true;
+            } else
+            {
+                // Debug Option
+                if (wedgeCategories[0].wedges.Length > 0) currWedgeChoice = wedgeCategories[0];
+                else currWedgeChoice = wedgeCategories[1];
+                normalTypeNext = false;
             }
 
             int wedgesToSpawn = Random.Range(currWedgeChoice.min, currWedgeChoice.max + 1);
@@ -82,6 +94,7 @@ public class WedgeSpawner : MonoBehaviour
                 if (firstType && i == 0) // Make first wedge spawn closer
                 {
                     wed.Spawn(-30f);
+                    firstType = false;
                 } else
                 {
                     wed.Spawn(0);
@@ -89,7 +102,6 @@ public class WedgeSpawner : MonoBehaviour
                 yield return new WaitUntil(() => !GameManager.Main.gameRunning ||
                 w.transform.rotation.z < wed.rotationTilSpawnNext);
             }
-            firstType = false;
         }
     }
 

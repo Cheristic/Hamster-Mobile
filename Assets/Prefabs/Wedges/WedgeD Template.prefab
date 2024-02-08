@@ -244,6 +244,7 @@ MonoBehaviour:
   rotationTilSpawnNext: -0.97
   rotationTilCleared1: -0.65
   rotationTilCleared2: -0.015
+  rotationTilSwitchLayer: -0.015
 --- !u!1 &7578553995627743795
 GameObject:
   m_ObjectHideFlags: 0

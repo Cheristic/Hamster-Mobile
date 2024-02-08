@@ -8,7 +8,7 @@ public class HamsterControls : MonoBehaviour
 {
     [Header("Hamster Values")]
     [SerializeField] private float jumpHeight = 5f;
-    [SerializeField] private float bufferDistance = 0.2f;
+    [SerializeField] private float isGroundedCheckDistance = 0.2f;
     [SerializeField] LayerMask obstaclesLayerMask;
 
     [Header("Controls")]
@@ -27,16 +27,15 @@ public class HamsterControls : MonoBehaviour
         GameManager.gameStart += OnGameStart;
         GameManager.gameEnd += OnGameEnd;
         GameManager.newGame += OnNewGame;
+        InputManager.OnTouchStart += StartTouch;
     }
 
     private void OnGameStart()
     {
-        InputManager.OnTouchStart += StartTouch;
         InputManager.OnTouchEnd += EndTouch;
     }
     private void OnGameEnd()
     {
-        InputManager.OnTouchStart -= StartTouch;
         InputManager.OnTouchEnd -= EndTouch;
         gameObject.SetActive(false);
     }
@@ -44,7 +43,7 @@ public class HamsterControls : MonoBehaviour
     {
         transform.position = new Vector2(0, 7);
         gameObject.SetActive(true);
-        rb.velocity = new Vector2(0, -2);
+        rb.velocity = new Vector2(0, -5);
 
     }
 
@@ -62,7 +61,8 @@ public class HamsterControls : MonoBehaviour
     }
     private IEnumerator TapJumpDelay()
     {
-        yield return new WaitForSeconds(0.05f);
+        // Check touch position before and after delay and cancel jump if large enough
+        yield return new WaitForSeconds(0.0001f); // basically 1 frame
         if (GameManager.Main.gameRunning && InputManager.Main.input.Touch.TouchPress.inProgress)
         {
             TryJump();
@@ -85,7 +85,8 @@ public class HamsterControls : MonoBehaviour
 
     public bool TryJump()
     {
-        if (canJump && IsGrounded)
+        Debug.Log((InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>() - touchStartPos).magnitude);
+        if (canJump && IsGrounded && (InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>() - touchStartPos).magnitude < touchDistanceToFall)
         {
             canJump = false;
             rb.velocity = new Vector2(0, jumpHeight);
@@ -141,19 +142,19 @@ public class HamsterControls : MonoBehaviour
         get
         {
             Vector3 pos = new Vector3(collide.bounds.center.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
-            RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, bufferDistance, obstaclesLayerMask);
+            RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, isGroundedCheckDistance, obstaclesLayerMask);
             if (hit.collider != null && !hit.collider.CompareTag("Damager"))
             {
                 return true;
             }
             Vector3 pos1 = new Vector3(collide.bounds.max.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
-            RaycastHit2D hit1 = Physics2D.Raycast(pos1, Vector2.down, bufferDistance, obstaclesLayerMask);
+            RaycastHit2D hit1 = Physics2D.Raycast(pos1, Vector2.down, isGroundedCheckDistance, obstaclesLayerMask);
             if (hit1.collider != null && !hit1.collider.CompareTag("Damager"))
             {
                 return true;
             }
             Vector3 pos2 = new Vector3(collide.bounds.min.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
-            RaycastHit2D hit2 = Physics2D.Raycast(pos2, Vector2.down, bufferDistance, obstaclesLayerMask);
+            RaycastHit2D hit2 = Physics2D.Raycast(pos2, Vector2.down, isGroundedCheckDistance, obstaclesLayerMask);
             if (hit2.collider != null && !hit2.collider.CompareTag("Damager"))
             {
                 return true;

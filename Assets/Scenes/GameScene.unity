@@ -1418,16 +1418,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wedgeCategories:
   - category: 0
+    min: 5
+    max: 5
+    wedges: []
+  - category: 1
     min: 7
     max: 12
     wedges:
-    - {fileID: 7508632882225528069, guid: 1c5154e952b10e348a2dcf4d46122558, type: 3}
-  - category: 1
-    min: 4
-    max: 6
+    - {fileID: 7508632882225528069, guid: 7d0a895b0b4ccb445b207b8b50335814, type: 3}
+    - {fileID: 7508632882225528069, guid: a79d5e85ea6f3f74aa06b16b26c56ca8, type: 3}
+    - {fileID: 7508632882225528069, guid: 5213282b5b2163d48814b5873258e2fd, type: 3}
+    - {fileID: 7508632882225528069, guid: 2f25b4ae15331f04e8497752a2b4be2c, type: 3}
+    - {fileID: 7508632882225528069, guid: 0019de98828ad624aa7a6591b1897020, type: 3}
+    - {fileID: 7508632882225528069, guid: 8e193d86bc164d24f8fd1bae953e2633, type: 3}
+  - category: 2
+    min: 3
+    max: 5
     wedges:
     - {fileID: 7508632882225528069, guid: ebf65fe53da73674082abf2f26010dee, type: 3}
     - {fileID: 7508632882225528069, guid: b1bb894ccf98aef44b397a0dd1e531bc, type: 3}
+  - category: 3
+    min: 3
+    max: 5
+    wedges:
+    - {fileID: 7508632882225528069, guid: 1c5154e952b10e348a2dcf4d46122558, type: 3}
+    - {fileID: 7508632882225528069, guid: 240b0786cc5b257438d6686ad87b826e, type: 3}
+    - {fileID: 7508632882225528069, guid: d8bf6c6b15c371746b28b5bbb95103f3, type: 3}
   rotationTilNewWedge: 0.55
 --- !u!1 &621875229
 GameObject:
@@ -1673,7 +1689,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 155fc8f1f0457fa4ca08b19205ba7dac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingRotationSpeed: 0.6
+  startingRotationSpeed: 0.84
   speedUpAmount: 0.06
   origin: {x: 0, y: 0, z: 0}
 --- !u!64 &625456006
@@ -2793,8 +2809,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5aade1351d867042afa2acf6e506739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 17
-  bufferDistance: 0.12
+  jumpHeight: 14
+  isGroundedCheckDistance: 0.2
   obstaclesLayerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -2835,16 +2851,16 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.035714287, y: 0.035714287, z: 0.035714287, w: 0.035714287}
+    border: {x: 0.03125, y: 0.03125, z: 0.03125, w: 0.03125}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.78571427, y: 0.42857143}
+    oldSize: {x: 0.6875, y: 0.375}
     newSize: {x: 0.2, y: 0.1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.625, y: 0.3125}
+  m_Size: {x: 0.58, y: 0.26}
   m_EdgeRadius: 0
 --- !u!50 &1143903366
 Rigidbody2D:
@@ -4501,7 +4517,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 200, y: 199.99976}
+  m_AnchoredPosition: {x: 200, y: 199.99951}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1978882155
