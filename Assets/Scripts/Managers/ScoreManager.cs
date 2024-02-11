@@ -7,7 +7,7 @@ using System;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Main { get; private set; }
-    private int score;
+    public int score;
     [SerializeField] TMP_Text scoreText;
     [SerializeField] float pointsTilSpeedUp = 3;
 

@@ -85,7 +85,6 @@ public class HamsterControls : MonoBehaviour
 
     public bool TryJump()
     {
-        Debug.Log((InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>() - touchStartPos).magnitude);
         if (canJump && IsGrounded && (InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>() - touchStartPos).magnitude < touchDistanceToFall)
         {
             canJump = false;

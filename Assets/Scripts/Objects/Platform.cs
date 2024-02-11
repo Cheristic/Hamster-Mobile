@@ -1,18 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
-    private Collider2D _collider;
-    void Awake()
-    {
-        _collider = GetComponent<Collider2D>();
-    }
+    [SerializeField] Collider2D _collider;
+    [SerializeField] Collider2D triggerCollider;
+    public static event Action PlayerFellThroughEvent;
 
     private void OnEnable()
     {
         HamsterControls.HamsterFall += DisablePlatform;
+        PlayerFellThroughEvent += PlayerFellThrough;
         _collider.enabled = false;
         StartCoroutine(HandleColliderActive());
     }
@@ -20,13 +20,16 @@ public class Platform : MonoBehaviour
     {
         yield return new WaitUntil(() => transform.position.x > 0);
         _collider.enabled = true;
+        triggerCollider.enabled = true;
         yield return new WaitUntil(() => transform.position.x < 0);
         yield return new WaitUntil(() => transform.position.x > 0);
         _collider.enabled = false;
+        triggerCollider.enabled = false;
     }
     private void OnDisable()
     {
         HamsterControls.HamsterFall -= DisablePlatform;
+        PlayerFellThroughEvent -= PlayerFellThrough;
     }
 
     private void DisablePlatform()
@@ -38,5 +41,19 @@ public class Platform : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         _collider.enabled = true;
+    }
+    private void PlayerFellThrough()
+    {
+        _collider.enabled = true;
+        StopAllCoroutines();
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.CompareTag("Hamster"))
+        {
+            Debug.Log("platform fell through");
+            PlayerFellThroughEvent?.Invoke();
+        }
     }
 }

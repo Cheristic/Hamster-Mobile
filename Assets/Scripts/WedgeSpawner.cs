@@ -17,7 +17,8 @@ public class WedgeSpawner : MonoBehaviour
         Test,
         Normal,
         Divided,
-        Beam
+        Beam,
+        Slopes
     }
     [Serializable]
     public struct WedgeChoice
@@ -49,7 +50,6 @@ public class WedgeSpawner : MonoBehaviour
                 }
             }
         }
-        Debug.Log("got here");
         StartCoroutine(SpawnWedge());
     }
 

@@ -61,7 +61,6 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(() => GameManager.Main.hamster.transform.position.y < -8.37f);
-        Debug.Log(GameManager.Main.hamster.transform.position.y);
         ChangeMenu(0);
     }
 }
