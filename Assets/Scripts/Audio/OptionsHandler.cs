@@ -17,12 +17,15 @@ public class OptionsHandler : MonoBehaviour
         {
             Main = this;
         }
+        Debug.Log("loaded");
     }
 
-    public bool zoomedMode = false;
+    internal bool zoomedMode = false;
+    internal bool fastFallEnabled = true;
     public void SetZoomedMode(bool mode) { zoomedMode = mode; }
 
     public AudioMixer mixer;
+    public GameObject touchBackground;
 
     public void SetVolumeLevel(float vol)
     {
@@ -33,6 +36,22 @@ public class OptionsHandler : MonoBehaviour
         else
         {
             mixer.SetFloat("Master Vol", Mathf.Log10(vol) * 20);
+        }
+    }
+
+    public void SetFastFall(bool enable)
+    {
+        if (enable)
+        {
+            fastFallEnabled = true;
+            InputManager.Main.SetTouchLine();
+            touchBackground.SetActive(true);
+        }
+        else
+        {
+            fastFallEnabled = false;
+            InputManager.Main.DisableTouchLine();
+            touchBackground.SetActive(false);
         }
     }
 }

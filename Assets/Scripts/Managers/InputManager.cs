@@ -22,9 +22,9 @@ public class InputManager : MonoBehaviour
         {
             Main = this;
         }
-        input = new();
-        touchDividerLine = TouchBackground.position.y;
+        input = new();   
     }
+
     private void OnEnable()
     {
         input.Enable();
@@ -38,6 +38,7 @@ public class InputManager : MonoBehaviour
     {
         input.Touch.TouchPress.started += ctx => StartTouch(ctx);
         input.Touch.TouchPress.canceled += ctx => EndTouch(ctx);
+        touchDividerLine = TouchBackground.position.y; // After Camera manager sets position
     }
 
     private void StartTouch(InputAction.CallbackContext c)
@@ -47,6 +48,16 @@ public class InputManager : MonoBehaviour
     private void EndTouch(InputAction.CallbackContext c)
     {
         OnTouchEnd?.Invoke(input.Touch.TouchPosition.ReadValue<Vector2>(), (float)c.time);
+    }
+
+    public void SetTouchLine()
+    {
+        touchDividerLine = TouchBackground.position.y;
+    }
+
+    public void DisableTouchLine()
+    {
+        touchDividerLine = -500;
     }
 
 }

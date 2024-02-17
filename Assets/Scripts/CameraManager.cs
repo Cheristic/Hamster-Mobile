@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Resolution manager
 public class CameraManager : MonoBehaviour
 {
     public float sceneWidth;
@@ -11,6 +12,9 @@ public class CameraManager : MonoBehaviour
     [SerializeField] float zoomTime;
     private float baseView, zoomedView;
     [SerializeField] float zoomedXPos;
+
+    [Header("Links")]
+    [SerializeField] Transform TouchBackground;
     void Awake()
     {
         _camera = GetComponent<Camera>();
@@ -20,6 +24,10 @@ public class CameraManager : MonoBehaviour
         baseView = 0.5f * unitsPerPixel * Screen.height;
         zoomedView = zoomedSceneHeight * 0.5f;
         _camera.orthographicSize = baseView;
+
+        // Place halfway between bottom of screen and bottom of wheel
+        print(baseView + " " + Screen.height);
+        TouchBackground.position = new Vector2(0, (-9 - baseView)/2 + 0.5f);
     }
 
     IEnumerator zooming = null;

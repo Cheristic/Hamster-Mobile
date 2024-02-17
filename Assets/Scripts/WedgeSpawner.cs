@@ -26,6 +26,7 @@ public class WedgeSpawner : MonoBehaviour
         public WedgeCategory category;
         public int min;
         public int max;
+        public bool FastFallOnly;
         public GameObject[] wedges;
         [HideInInspector] public List<GameObject>[] pooledWedges;
     }
@@ -74,7 +75,9 @@ public class WedgeSpawner : MonoBehaviour
                 do
                 {
                     newWedge = Random.Range(2, wedgeCategories.Length);
-                } while (newWedge == (int)currWedgeChoice.category);
+                    // Change this part later with gamemodes
+                } while ((!OptionsHandler.Main.fastFallEnabled && wedgeCategories[newWedge].FastFallOnly) ||
+                newWedge == (int)currWedgeChoice.category);
                 // Choose wedge category and number of consecutive wedges of category to spawn
                 currWedgeChoice = wedgeCategories[newWedge];
                 normalTypeNext = true;

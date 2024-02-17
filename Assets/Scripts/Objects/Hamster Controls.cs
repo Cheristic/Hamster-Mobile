@@ -90,7 +90,6 @@ public class HamsterControls : MonoBehaviour
                 if (touchPos < InputManager.Main.touchDividerLine &&
                     touchPos < touchStartPos - touchDistanceToFall) 
                 {
-                    print(touchPos);
                     TryFall();
                     yield break;
                 }
