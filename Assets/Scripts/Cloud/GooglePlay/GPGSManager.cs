@@ -8,9 +8,6 @@ using UnityEngine.UI;
 
 public class GPGSManager : MonoBehaviour
 {
-    private PlayGamesLocalUser clientConfigurations;
-    public Text statusText;
-    public Text descriptionText;
     bool connectedToGooglePlay;
     void Awake()
     {
@@ -32,16 +29,27 @@ public class GPGSManager : MonoBehaviour
         if (status == SignInStatus.Success)
         {
             connectedToGooglePlay = true;
+            
+            PlayGamesPlatform.Instance.LoadScores(
+                GPGSIds.leaderboard_hamster_high_score,
+                LeaderboardStart.PlayerCentered,
+                1,
+                LeaderboardCollection.Public,
+                LeaderboardTimeSpan.AllTime,
+                (LeaderboardScoreData data) =>
+                {
+                    ScoreManager.Main.highscore = (int)data.PlayerScore.value;
+                });
+            ScoreManager.Main.highscoreEnabled = true;
         }
         else connectedToGooglePlay = false;
     }
 
     private void OnGameEnd()
-    {
+    {     
         if (connectedToGooglePlay)
         {
             Social.ReportScore(ScoreManager.Main.score, GPGSIds.leaderboard_hamster_high_score, UpdateLeaderboard);
-            Social.ShowLeaderboardUI();
         }
     }
 
@@ -51,9 +59,13 @@ public class GPGSManager : MonoBehaviour
         else Debug.Log("Failed to update leadeboard.");
     }
 
-    // Update is called once per frame
-    void Update()
+    // Called by CloudManager
+    public void ShowLeaderboard()
     {
-        
+        if (connectedToGooglePlay)
+        {
+            Social.ShowLeaderboardUI();
+        }
     }
+
 }

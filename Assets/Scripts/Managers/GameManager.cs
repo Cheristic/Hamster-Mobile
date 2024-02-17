@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
         {
             Main = this;
         }
-        gameRunning = false; 
+        gameRunning = false;
+        Application.targetFrameRate = 30;
     }
 
     public static event Action gameStart;

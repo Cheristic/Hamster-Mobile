@@ -10,6 +10,8 @@ public class InputManager : MonoBehaviour
     public HamsterInput input;
     public static event Action<Vector2, float> OnTouchStart;
     public static event Action<Vector2, float> OnTouchEnd;
+    public Transform TouchBackground;
+    internal float touchDividerLine;
     private void Awake()
     {
         if (Main != null && Main != this)
@@ -21,6 +23,7 @@ public class InputManager : MonoBehaviour
             Main = this;
         }
         input = new();
+        touchDividerLine = TouchBackground.position.y;
     }
     private void OnEnable()
     {

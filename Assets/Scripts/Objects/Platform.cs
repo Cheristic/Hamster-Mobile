@@ -52,7 +52,6 @@ public class Platform : MonoBehaviour
     {
         if (collider.CompareTag("Hamster"))
         {
-            Debug.Log("platform fell through");
             PlayerFellThroughEvent?.Invoke();
         }
     }

@@ -12,22 +12,25 @@ public class HamsterControls : MonoBehaviour
     [SerializeField] LayerMask obstaclesLayerMask;
 
     [Header("Controls")]
-    [SerializeField] private float touchDistanceToFall = 30f;
+    [SerializeField] private float touchDistanceToFall = 1f;
     [SerializeField] private float jumpLimitTime = 1f;
     [SerializeField] private float jumpBoost = 200f;
 
     Rigidbody2D rb;
     Collider2D collide;
-    bool canJump;
+    bool isAscending;
+    bool canFall;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         collide = GetComponent<Collider2D>();
-        canJump = true;
+        isAscending = false;
+        canFall = true;
         GameManager.gameStart += OnGameStart;
         GameManager.gameEnd += OnGameEnd;
         GameManager.newGame += OnNewGame;
         InputManager.OnTouchStart += StartTouch;
+        
     }
 
     private void OnGameStart()
@@ -47,47 +50,70 @@ public class HamsterControls : MonoBehaviour
 
     }
 
-    private Vector2 touchStartPos;
+    private float touchStartPos;
     private void StartTouch(Vector2 pos, float time)
     {
-        touchStartPos = pos;
+        touchStartPos = Camera.main.ScreenToWorldPoint(pos).y;
     }
+    private void EndTouch(Vector2 pos, float time)
+    {
+        StopCoroutine("FallInputCheck");
+        canFall = true;
+    }
+    float touchPos;
+    
     private void Update()
     {
         if (GameManager.Main.gameRunning && InputManager.Main.input.Touch.TouchPress.inProgress)
         {
-            StartCoroutine(TapJumpDelay());
+            touchPos = Camera.main.ScreenToWorldPoint(InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>()).y;
+            bool aboveLine = false;
+            if (touchPos >= InputManager.Main.touchDividerLine) // If above line, try to jump
+            {
+                TryJump();
+                aboveLine = true;
+            }
+            if (canFall) StartCoroutine(FallInputCheck(aboveLine));
         }
     }
-    private IEnumerator TapJumpDelay()
+
+    // Active while screen is being pressed
+    private IEnumerator FallInputCheck(bool aboveLine)
     {
-        // Check touch position before and after delay and cancel jump if large enough
-        yield return new WaitForSeconds(0.0001f); // basically 1 frame
-        if (GameManager.Main.gameRunning && InputManager.Main.input.Touch.TouchPress.inProgress)
+        canFall = false;
+        
+        // do fall check
+        while (true)
         {
-            TryJump();
+            if (aboveLine) // Initial input is above line
+            {
+                if (touchPos < InputManager.Main.touchDividerLine &&
+                    touchPos < touchStartPos - touchDistanceToFall) 
+                {
+                    print(touchPos);
+                    TryFall();
+                    yield break;
+                }
+            } 
+            else
+            {
+                if (touchPos < touchStartPos - touchDistanceToFall)
+                {
+                    TryFall();
+                    yield break;
+                }
+            }
+
+            touchPos = InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>().y;
+            yield return null;
         }
     }
-
-    private void EndTouch(Vector2 pos, float time)
-    {
-        Vector2 dif = touchStartPos - pos;
-        if (dif.magnitude >= touchDistanceToFall)
-        {
-            TryFall();
-        } else
-        {
-            TryJump();
-        }
-    }
-
-
 
     public bool TryJump()
     {
-        if (canJump && IsGrounded && (InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>() - touchStartPos).magnitude < touchDistanceToFall)
+        if (!isAscending && IsGrounded)
         {
-            canJump = false;
+            isAscending = true;     
             rb.velocity = new Vector2(0, jumpHeight);
             StartCoroutine(Jump());
             return true;
@@ -99,7 +125,7 @@ public class HamsterControls : MonoBehaviour
     {
         float jumpTime = 0f;
         // while moving up && finger is tapped && less than limit
-        while(!canJump && InputManager.Main.input.Touch.TouchPress.inProgress && jumpTime < jumpLimitTime)
+        while(isAscending && InputManager.Main.input.Touch.TouchPress.inProgress && jumpTime < jumpLimitTime)
         {
             jumpTime += Time.deltaTime;
             addJumpBoost = true;
@@ -125,7 +151,7 @@ public class HamsterControls : MonoBehaviour
         }
         if (rb.velocity.y <= 0)
         {
-            canJump = true;
+            isAscending = false;
         }
         if (Mathf.Abs(transform.position.x) > .01)
         {

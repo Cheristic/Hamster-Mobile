@@ -38,7 +38,7 @@ namespace GooglePlayGames {
 
         public const string ApplicationId = "636950651386"; // Filled in automatically
         public const string IosClientId = "__IOS_CLIENTID__"; // Filled in automatically
-        public const string WebClientId = ""; // Filled in automatically
+        public const string WebClientId = "636950651386-am64lv8o1hf3a0c1a4a82v0p561655l9.apps.googleusercontent.com"; // Filled in automatically
         public const string NearbyConnectionServiceId = "com.BrainrotInc.HamsterGame";
 
         public static bool ApplicationIdInitialized() {
