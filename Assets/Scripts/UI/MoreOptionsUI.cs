@@ -9,6 +9,7 @@ public class MoreOptionsUI : MonoBehaviour
     private CustomObjectAnimation moreOptionsVisibleAnim;
 
     bool expanded = false;
+    internal bool interactable = true;
 
     private void Awake()
     {
@@ -24,7 +25,7 @@ public class MoreOptionsUI : MonoBehaviour
     // Collapses options into More Options (i) button or expands it out
     public void CollapseOptions()
     {
-        if (!expanded) return;
+        if (!expanded || !interactable) return;
         expanded = false;
         foreach (var item in options)
         {
@@ -36,7 +37,7 @@ public class MoreOptionsUI : MonoBehaviour
     }
     public void ExpandOptions()
     {
-        if (expanded) return;
+        if (expanded || !interactable) return;
         expanded = true;
         foreach (var item in options)
         {

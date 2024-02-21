@@ -2608,7 +2608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19b393bc8094f74e873d7fbb3219dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animTime: 1
+  animTime: 0.75
   startPos: {x: 200, y: -200, z: 0}
   movedPos: {x: 200, y: 200, z: 0}
   ToMoveCurve:
@@ -6210,7 +6210,7 @@ RectTransform:
   m_GameObject: {fileID: 1978882152}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1738686591}
@@ -6329,7 +6329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19b393bc8094f74e873d7fbb3219dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animTime: 1
+  animTime: 0.5
   startPos: {x: 0, y: 0, z: 0}
   movedPos: {x: 0, y: 240, z: 0}
   ToMoveCurve:
