@@ -42,7 +42,7 @@ public partial class @HamsterInput: IInputActionCollection2, IDisposable
                     ""id"": ""75e30029-1989-488d-828f-d789cb1da2a8"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],

@@ -29,8 +29,14 @@ public class HamsterControls : MonoBehaviour
         GameManager.gameStart += OnGameStart;
         GameManager.gameEnd += OnGameEnd;
         GameManager.newGame += OnNewGame;
-        InputManager.OnTouchStart += StartTouch;
-        
+        StartCoroutine(HamsterReadyChecker());
+    }
+
+    public static event Action TriggerHamsterReady;
+    private IEnumerator HamsterReadyChecker()
+    {
+        yield return new WaitUntil(() => IsGrounded);
+        TriggerHamsterReady?.Invoke();
     }
 
     private void OnGameStart()
@@ -47,63 +53,53 @@ public class HamsterControls : MonoBehaviour
         transform.position = new Vector2(0, 7);
         gameObject.SetActive(true);
         rb.velocity = new Vector2(0, -5);
-
+        StartCoroutine(HamsterReadyChecker());
     }
 
-    private float touchStartPos;
-    private void StartTouch(Vector2 pos, float time)
-    {
-        touchStartPos = Camera.main.ScreenToWorldPoint(pos).y;
-    }
     private void EndTouch(Vector2 pos, float time)
     {
         StopCoroutine("FallInputCheck");
         canFall = true;
+        canHoldJump = false;
     }
     float touchPos;
-    
+    bool canHoldJump = false;
     private void Update()
     {
         if (GameManager.Main.gameRunning && InputManager.Main.input.Touch.TouchPress.inProgress)
         {
-            touchPos = Camera.main.ScreenToWorldPoint(InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>()).y;
-            bool aboveLine = false;
-            if (touchPos >= InputManager.Main.touchDividerLine) // If above line, try to jump
+            if (canFall)
+            {
+                touchPos = Camera.main.ScreenToWorldPoint(InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>()).y;
+                if (touchPos >= InputManager.Main.touchDividerLine) // If above line, try to jump
+                {
+                    TryJump();
+                    canHoldJump = true;
+                }
+                StartCoroutine(FallInputCheck());
+            } else if (canHoldJump)
             {
                 TryJump();
-                aboveLine = true;
             }
-            if (canFall) StartCoroutine(FallInputCheck(aboveLine));
+            
         }
     }
 
     // Active while screen is being pressed
-    private IEnumerator FallInputCheck(bool aboveLine)
+    private IEnumerator FallInputCheck()
     {
         canFall = false;
         
         // do fall check
         while (true)
         {
-            if (aboveLine) // Initial input is above line
+            if (touchPos < InputManager.Main.touchDividerLine)
             {
-                if (touchPos < InputManager.Main.touchDividerLine &&
-                    touchPos < touchStartPos - touchDistanceToFall) 
-                {
-                    TryFall();
-                    yield break;
-                }
-            } 
-            else
-            {
-                if (touchPos < touchStartPos - touchDistanceToFall)
-                {
-                    TryFall();
-                    yield break;
-                }
+                TryFall();
+                yield break;
             }
 
-            touchPos = InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>().y;
+            touchPos = Camera.main.ScreenToWorldPoint(InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>()).y;
             yield return null;
         }
     }
@@ -156,7 +152,6 @@ public class HamsterControls : MonoBehaviour
         {
             float vel = Mathf.Abs(transform.position.x) > 5 ? transform.position.x : transform.position.x*1.5f;
             rb.velocity = new Vector2(-vel, rb.velocity.y);
-            //transform.position = new Vector2(Mathf.Lerp(transform.position.x, 0, 10f * Time.deltaTime), transform.position.y);
         }
 
     }

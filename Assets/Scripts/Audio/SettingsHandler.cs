@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class OptionsHandler : MonoBehaviour
+public class SettingsHandler : MonoBehaviour
 {
-    public static OptionsHandler Main { get; private set; }
+    public static SettingsHandler Main { get; private set; }
 
     private void Awake()
     {

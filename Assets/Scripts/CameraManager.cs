@@ -18,7 +18,8 @@ public class CameraManager : MonoBehaviour
     void Awake()
     {
         _camera = GetComponent<Camera>();
-        OptionsMenu.EnterOptionsMenu += ChangeCameraAngle;
+
+        MM_Settings.EnterSettingsMenu += ChangeCameraAngle; // Zoom in when entering settings
 
         float unitsPerPixel = sceneWidth / Screen.width;
         baseView = 0.5f * unitsPerPixel * Screen.height;
@@ -26,14 +27,13 @@ public class CameraManager : MonoBehaviour
         _camera.orthographicSize = baseView;
 
         // Place halfway between bottom of screen and bottom of wheel
-        print(baseView + " " + Screen.height);
         TouchBackground.position = new Vector2(0, (-9 - baseView)/2 + 0.5f);
     }
 
     IEnumerator zooming = null;
     private void ChangeCameraAngle(bool entering)
     {
-        if (OptionsHandler.Main.zoomedMode) return; // Don't zoom out if on zoomedMode
+        if (SettingsHandler.Main.zoomedMode) return; // Don't zoom out if on zoomedMode
 
         if (zooming != null) StopCoroutine(zooming);
         StartCoroutine(zooming = ZoomAnimation(entering));

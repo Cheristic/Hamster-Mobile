@@ -76,7 +76,7 @@ public class WedgeSpawner : MonoBehaviour
                 {
                     newWedge = Random.Range(2, wedgeCategories.Length);
                     // Change this part later with gamemodes
-                } while ((!OptionsHandler.Main.fastFallEnabled && wedgeCategories[newWedge].FastFallOnly) ||
+                } while ((!SettingsHandler.Main.fastFallEnabled && wedgeCategories[newWedge].FastFallOnly) ||
                 newWedge == (int)currWedgeChoice.category);
                 // Choose wedge category and number of consecutive wedges of category to spawn
                 currWedgeChoice = wedgeCategories[newWedge];
