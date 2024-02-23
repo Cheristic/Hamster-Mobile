@@ -18,7 +18,7 @@ public class GPGSManager : MonoBehaviour
 
     private void Start()
     {
-        LoginToGooglePlay();
+        LoginToGooglePlay(); // Also authenticate every time user clicks Daily button
     }
     private void LoginToGooglePlay()
     {
@@ -40,7 +40,7 @@ public class GPGSManager : MonoBehaviour
                 {
                     ScoreManager.Main.highscore = (int)data.PlayerScore.value;
                 });
-            ScoreManager.Main.highscoreEnabled = true;
+            ScoreManager.Main.highscoreEnabled = true; // Only update high score if connected to google
         }
         else connectedToGooglePlay = false;
     }
@@ -66,6 +66,28 @@ public class GPGSManager : MonoBehaviour
         {
             Social.ShowLeaderboardUI();
         }
+    }
+
+    public DailyHamsterdle.HamsterdleStatus HasCompletedDaily()
+    {
+        LoginToGooglePlay(); // Need to check sync issues
+        if (connectedToGooglePlay)
+        {
+            int count = 0;
+            PlayGamesPlatform.Instance.LoadScores(
+                GPGSIds.leaderboard_daily_hamsterdle,
+                LeaderboardStart.PlayerCentered,
+                1,
+                LeaderboardCollection.Public,
+                LeaderboardTimeSpan.Daily,
+                (data) =>
+                {
+                    count = (int)data.ApproximateCount;
+                });
+            if (count == 0) return DailyHamsterdle.HamsterdleStatus.HasNotCompletedHamsterdle;
+            else return DailyHamsterdle.HamsterdleStatus.HasCompletedHamsterdle;
+        }
+        return DailyHamsterdle.HamsterdleStatus.CannotConnectToGoogle;
     }
 
 }

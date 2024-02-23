@@ -21,7 +21,6 @@ public class SettingsHandler : MonoBehaviour
     }
 
     internal bool zoomedMode = false;
-    internal bool fastFallEnabled = true;
     public void SetZoomedMode(bool mode) { zoomedMode = mode; }
 
     public AudioMixer mixer;
@@ -39,19 +38,19 @@ public class SettingsHandler : MonoBehaviour
         }
     }
 
-    public void SetFastFall(bool enable)
+    public void SetExpertMode(bool enable)
     {
         if (enable)
         {
-            fastFallEnabled = true;
             InputManager.Main.SetTouchLine();
             touchBackground.SetActive(true);
+            WheelManager.Main.ChooseExpertSeed();
         }
         else
         {
-            fastFallEnabled = false;
             InputManager.Main.DisableTouchLine();
             touchBackground.SetActive(false);
+            WheelManager.Main.ChooseDefaultSeed();
         }
     }
 }

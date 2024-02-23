@@ -42,4 +42,13 @@ public class CloudManager : MonoBehaviour
                 break;
         }
     }
+
+    public DailyHamsterdle.HamsterdleStatus HasCompletedDaily()
+    {
+        if (platform == Platform.Android)
+        {
+            return gpgs.HasCompletedDaily();
+        }
+        return DailyHamsterdle.HamsterdleStatus.CannotConnectToGoogle;
+    }
 }

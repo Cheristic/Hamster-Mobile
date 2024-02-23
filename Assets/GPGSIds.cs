@@ -24,6 +24,7 @@
 
 public static class GPGSIds
 {
+        public const string leaderboard_daily_hamsterdle = "CgkI-sPe6cQSEAIQAg"; // <GPGSID>
         public const string leaderboard_hamster_high_score = "CgkI-sPe6cQSEAIQAA"; // <GPGSID>
 
 }
