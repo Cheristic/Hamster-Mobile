@@ -5,7 +5,8 @@ using UnityEngine;
 public class MoreOptionsUI : MonoBehaviour
 {
     [SerializeField] Animator anim;
-    public CustomObjectAnimation[] options;
+    [SerializeField] CustomObjectAnimation[] options;
+    [SerializeField] CustomObjectAnimation[] optionsFlavorText;
     private CustomObjectAnimation moreOptionsVisibleAnim;
 
     bool expanded = false;
@@ -27,10 +28,14 @@ public class MoreOptionsUI : MonoBehaviour
     {
         if (!expanded || !interactable) return;
         expanded = false;
-        foreach (var item in options)
+        for (int i = 0; i < options.Length; i++)
         {
+            var item = options[i];
             if (item.inProgress) item.StopAllCoroutines(); // Interrupt animation
             item.StartCoroutine(item.EasePosition(false));
+            item = optionsFlavorText[i];
+            if (item.inProgress) item.StopAllCoroutines();
+            item.StartCoroutine(item.EaseOpacity(false));
         }
 
 
@@ -39,10 +44,14 @@ public class MoreOptionsUI : MonoBehaviour
     {
         if (expanded || !interactable) return;
         expanded = true;
-        foreach (var item in options)
+        for (int i = 0; i < options.Length; i++)
         {
+            var item = options[i];
             if (item.inProgress) item.StopAllCoroutines(); // Interrupt animation
             item.StartCoroutine(item.EasePosition(true));
+            item = optionsFlavorText[i];
+            if (item.inProgress) item.StopAllCoroutines();
+            item.StartCoroutine(item.EaseOpacity(true));
         }
     }
 

@@ -19,7 +19,6 @@ public class CloudManager : MonoBehaviour
     public Platform platform;
 
     private GPGSManager gpgs;
-    
     private void Awake()
     {
         if (cloud != null && cloud != this)

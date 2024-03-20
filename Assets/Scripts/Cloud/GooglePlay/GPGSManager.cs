@@ -16,6 +16,7 @@ public class GPGSManager : MonoBehaviour
         GameManager.gameEnd += OnGameEnd;
     }
 
+
     private void Start()
     {
         LoginToGooglePlay(); // Also authenticate every time user clicks Daily button

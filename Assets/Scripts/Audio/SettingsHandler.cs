@@ -44,13 +44,13 @@ public class SettingsHandler : MonoBehaviour
         {
             InputManager.Main.SetTouchLine();
             touchBackground.SetActive(true);
-            WheelManager.Main.ChooseExpertSeed();
+            GameModeSelector.Main.ChooseExpertSeed();
         }
         else
         {
             InputManager.Main.DisableTouchLine();
             touchBackground.SetActive(false);
-            WheelManager.Main.ChooseDefaultSeed();
+            GameModeSelector.Main.ChooseDefaultSeed();
         }
     }
 }
