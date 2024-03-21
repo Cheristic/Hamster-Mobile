@@ -13,6 +13,8 @@ public class DailyHamsterdle : MonoBehaviour
 {
     List<HamsterdleWedgeSeedData> DailyHamsterdleData;
     DateTime launchDate0;
+    [SerializeField] int launchMonth;
+    [SerializeField] int launchDay;
 
     public enum HamsterdleStatus
     {
@@ -24,7 +26,7 @@ public class DailyHamsterdle : MonoBehaviour
     {
         string s = Resources.Load<TextAsset>("GameModeSeeds/HamsterdleSeeds").text;
         DailyHamsterdleData = JsonConvert.DeserializeObject<List<HamsterdleWedgeSeedData>>(s);
-        launchDate0 = new(2024, 3, 19);
+        launchDate0 = new(2024, launchMonth, launchDay);
     }
 
     struct ServerDateTime
