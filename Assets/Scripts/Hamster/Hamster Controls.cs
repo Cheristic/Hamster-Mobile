@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,44 +9,51 @@ public class HamsterControls : MonoBehaviour
 {
     [Header("Hamster Values")]
     [SerializeField] private float jumpHeight = 5f;
-    [SerializeField] private float isGroundedCheckDistance = 0.2f;
+    [SerializeField] private float isGroundedCheckDistance;
     [SerializeField] LayerMask obstaclesLayerMask;
 
     [Header("Controls")]
-    [SerializeField] private float touchDistanceToFall = 1f;
     [SerializeField] private float jumpLimitTime = 1f;
     [SerializeField] private float jumpBoost = 200f;
+    [SerializeField] private float bufferTime;
 
+    // Links
     Rigidbody2D rb;
     Collider2D collide;
-    bool isAscending;
-    bool canFall;
+    InputAction TouchPress;
+
+    // Misc variables
+    bool CanFall = false;
+    bool IsJumpHolding = false;
+    public static event Action HamsterFall;
+    Vector3 leftGroundedChecker = Vector3.zero;
+    Vector3 rightGroundedChecker = Vector3.zero;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         collide = GetComponent<Collider2D>();
-        isAscending = false;
-        canFall = true;
+
+        rightGroundedChecker = transform.InverseTransformPoint(new Vector3(collide.bounds.max.x, collide.bounds.center.y - collide.bounds.extents.y, 0));
+        leftGroundedChecker = transform.InverseTransformPoint(new Vector3(collide.bounds.min.x, collide.bounds.center.y - collide.bounds.extents.y, 0));
+
+
         GameManager.gameStart += OnGameStart;
         GameManager.gameEnd += OnGameEnd;
         GameManager.newGame += OnNewGame;
-        StartCoroutine(HamsterReadyChecker());
-    }
 
-    public static event Action TriggerHamsterReady;
-    private IEnumerator HamsterReadyChecker()
-    {
-        yield return new WaitUntil(() => IsGrounded);
-        TriggerHamsterReady?.Invoke();
+        TouchPress = InputManager.Main.input.Touch.TouchPress;
+
+        StartCoroutine(HamsterReadyChecker());
     }
 
     private void OnGameStart()
     {
-        InputManager.OnTouchEnd += EndTouch;
+        InputManager.OnTouchStart += StartTouch;
     }
+
     private void OnGameEnd()
     {
-        InputManager.OnTouchEnd -= EndTouch;
+        InputManager.OnTouchStart -= StartTouch;
         gameObject.SetActive(false);
     }
     private void OnNewGame()
@@ -55,99 +63,111 @@ public class HamsterControls : MonoBehaviour
         rb.velocity = new Vector2(0, -5);
         StartCoroutine(HamsterReadyChecker());
     }
-
-    private void EndTouch(Vector2 pos, float time)
+    public static event Action TriggerHamsterReady;
+    private IEnumerator HamsterReadyChecker()
     {
-        StopCoroutine("FallInputCheck");
-        canFall = true;
-        canHoldJump = false;
-    }
-    float touchPos;
-    bool canHoldJump = false;
-    private void Update()
-    {
-        if (GameManager.Main.gameRunning && InputManager.Main.input.Touch.TouchPress.inProgress)
-        {
-            if (canFall)
-            {
-                touchPos = Camera.main.ScreenToWorldPoint(InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>()).y;
-                if (touchPos >= InputManager.Main.touchDividerLine) // If above line, try to jump
-                {
-                    TryJump();
-                    canHoldJump = true;
-                }
-                StartCoroutine(FallInputCheck());
-            } else if (canHoldJump)
-            {
-                TryJump();
-            }
-            
-        }
+        yield return new WaitUntil(() => IsGrounded);
+        TriggerHamsterReady?.Invoke();
     }
 
-    // Active while screen is being pressed
-    private IEnumerator FallInputCheck()
+    private void StartTouch(Vector2 pos, float time)
     {
-        canFall = false;
-        
-        // do fall check
-        while (true)
-        {
-            if (touchPos < InputManager.Main.touchDividerLine)
-            {
-                TryFall();
-                yield break;
-            }
-
-            touchPos = Camera.main.ScreenToWorldPoint(InputManager.Main.input.Touch.TouchPosition.ReadValue<Vector2>()).y;
-            yield return null;
-        }
+        HandleInput();
+        StartCoroutine(HampsterJumpHold());
     }
 
-    public bool TryJump()
+
+    // Return true when jump successfully, false otherwise
+    public bool HandleInput()
     {
-        if (!isAscending && IsGrounded)
+
+        if (IsGrounded)
         {
-            isAscending = true;     
-            rb.velocity = new Vector2(0, jumpHeight);
-            StartCoroutine(Jump());
+            HampsterJump();
             return true;
         }
-        return false;
+        else
+        {
+            if (CanFall)
+            {
+                TryFall();
+            }
+            //StartCoroutine(BufferJump());
+            return false;
+        }
     }
-    bool addJumpBoost = false;
-    private IEnumerator Jump()
+
+    private void HampsterJump()
+    {
+        CanFall = true;
+        rb.velocity = new Vector2(0, jumpHeight);
+        StartCoroutine(JumpBoost());
+    }
+
+    // Input for when player holds down screen and waits for hampster to land in order to buffer jump
+    private IEnumerator HampsterJumpHold()
+    {
+        if (IsJumpHolding) yield break;
+
+        IsJumpHolding = true;
+
+        while (GameManager.Main.gameRunning && TouchPress.inProgress)
+        {
+            if (rb.velocity.y <= 0 && IsGrounded)
+            {
+                HampsterJump();
+            }
+            yield return null;
+        }
+        IsJumpHolding = false;
+    }
+
+    private IEnumerator JumpBoost()
     {
         float jumpTime = 0f;
         // while moving up && finger is tapped && less than limit
-        while(isAscending && InputManager.Main.input.Touch.TouchPress.inProgress && jumpTime < jumpLimitTime)
+        while (rb.velocity.y > 0 && TouchPress.inProgress && jumpTime < jumpLimitTime)
         {
+            rb.AddForce(new Vector2(0, jumpBoost));
             jumpTime += Time.deltaTime;
-            addJumpBoost = true;
             yield return null;
         }
-        addJumpBoost = false;
-
     }
 
-    public static event Action HamsterFall;
     private void TryFall()
     {
         rb.velocity = new Vector2(rb.velocity.x, -jumpHeight);
+        Debug.Log("ham fall");
         HamsterFall?.Invoke();
+        CanFall = false;
     }
+
+    /*
+    private IEnumerator BufferJump()
+    {
+        float time = 0f;
+        while (!IsGrounded)
+        {
+            if (time >= bufferTime)
+            {
+                // If player cannot meet conditions within buffer window, cancel input
+                yield break;
+            }
+            time += Time.deltaTime;
+            yield return new WaitForSeconds(0.01f);
+        }
+        Debug.Log("Buffer Jump " + time);
+        if (time >= bufferTime) yield break;
+        // if conditions are met, call HandleInput() once more to activate it
+        HandleInput();
+    }*/
 
 
     private void FixedUpdate()
     {
-        if (addJumpBoost)
-        {
-            rb.AddForce(new Vector2(0, jumpBoost));
-        }
-        if (rb.velocity.y <= 0)
-        {
-            isAscending = false;
-        }
+        if (!GameManager.Main.gameRunning) return;
+
+        // Move hamster back to center
         if (Mathf.Abs(transform.position.x) > .01)
         {
             float vel = Mathf.Abs(transform.position.x) > 5 ? transform.position.x : transform.position.x*1.5f;
@@ -160,24 +180,20 @@ public class HamsterControls : MonoBehaviour
     {
         get
         {
-            Vector3 pos = new Vector3(collide.bounds.center.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
-            RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, isGroundedCheckDistance, obstaclesLayerMask);
-            if (hit.collider != null && !hit.collider.CompareTag("Damager"))
+
+            RaycastHit2D hit2 = Physics2D.Raycast(transform.TransformPoint(rightGroundedChecker), Vector2.down, isGroundedCheckDistance, obstaclesLayerMask);
+            Debug.DrawRay(transform.TransformPoint(rightGroundedChecker), Vector2.down * isGroundedCheckDistance, Color.green, 1f);
+            if (hit2.collider != null)
             {
                 return true;
             }
-            Vector3 pos1 = new Vector3(collide.bounds.max.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
-            RaycastHit2D hit1 = Physics2D.Raycast(pos1, Vector2.down, isGroundedCheckDistance, obstaclesLayerMask);
-            if (hit1.collider != null && !hit1.collider.CompareTag("Damager"))
+            RaycastHit2D hit1 = Physics2D.Raycast(transform.TransformPoint(leftGroundedChecker), Vector2.down, isGroundedCheckDistance, obstaclesLayerMask);
+            Debug.DrawRay(transform.TransformPoint(leftGroundedChecker), Vector2.down * isGroundedCheckDistance, Color.green, 1f);
+            if (hit1.collider != null)
             {
                 return true;
             }
-            Vector3 pos2 = new Vector3(collide.bounds.min.x, collide.bounds.center.y - collide.bounds.extents.y, 0);
-            RaycastHit2D hit2 = Physics2D.Raycast(pos2, Vector2.down, isGroundedCheckDistance, obstaclesLayerMask);
-            if (hit2.collider != null && !hit2.collider.CompareTag("Damager"))
-            {
-                return true;
-            }
+
             return false;
         }
     }

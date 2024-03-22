@@ -80,6 +80,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 11298885727223187}
+  - component: {fileID: 8633788821090196046}
   m_Layer: 0
   m_Name: big pivot
   m_TagString: Untagged
@@ -111,6 +112,33 @@ Transform:
   - {fileID: 823187253795128634}
   m_Father: {fileID: 7534939019710821861}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 36.52}
+--- !u!54 &8633788821090196046
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6192244440334824905}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7508632882225528069
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1f7e3ff440866469c7e641a4399e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationTilSpawnNext: -0.55
+  rotationTilSpawnNext: -0.6
   rotationTilCleared1: -0.59
   rotationTilCleared2: 0
   rotationTilSwitchLayer: -0.5

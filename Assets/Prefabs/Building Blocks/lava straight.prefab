@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8482082823352389796}
   - component: {fileID: 3129423004228076414}
   - component: {fileID: 474794507729131088}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: lava pivoted (1)
   m_TagString: Damager
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7860982255890020851}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: lava straight
   m_TagString: Damager
   m_Icon: {fileID: 0}

@@ -24,6 +24,7 @@ public class WedgeObject : MonoBehaviour
     {
         transform.rotation = Quaternion.Euler(0, 0, rot); // Reset rotation to top
         gameObject.SetActive(true);
+        gameObject.isStatic = false;
         StartCoroutine(CheckForRotation());
         foreach(var ren in renderers)
         {
@@ -56,5 +57,6 @@ public class WedgeObject : MonoBehaviour
     private void Despawn()
     {
         gameObject.SetActive(false);
+        gameObject.isStatic = true;
     }
 }

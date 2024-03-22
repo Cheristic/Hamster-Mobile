@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
             Main = this;
         }
         gameRunning = false;
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = 60;
     }
 
     public static event Action gameStart;
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     public static event Action newGame;
     public void StartGame()
     {
-        if (hamster.TryJump())
+        if (hamster.HandleInput())
         {
             gameRunning = true;
             gameStart?.Invoke();

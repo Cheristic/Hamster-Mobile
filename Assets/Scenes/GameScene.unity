@@ -304,7 +304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &111110700
 RectTransform:
   m_ObjectHideFlags: 0
@@ -756,7 +756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingRotationSpeed: 0.6
-  speedUpAmount: 0.2
+  speedUpAmount: 0.1
 --- !u!212 &285174454
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1476,7 +1476,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!60 &383891613
 PolygonCollider2D:
@@ -1497,16 +1497,16 @@ PolygonCollider2D:
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -2736,7 +2736,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &644646541
 Transform:
@@ -3533,7 +3533,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!331 &906867021
 SpriteMask:
@@ -4003,7 +4003,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!331 &1136647703
 SpriteMask:
@@ -4304,14 +4304,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5aade1351d867042afa2acf6e506739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 14
+  jumpHeight: 13
   isGroundedCheckDistance: 0.2
   obstaclesLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  touchDistanceToFall: 0.1
-  jumpLimitTime: 0.3
-  jumpBoost: 27
+  jumpLimitTime: 0.4
+  jumpBoost: 37
+  bufferTime: 0
 --- !u!61 &1143903365
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5908,7 +5908,6 @@ GameObject:
   - component: {fileID: 1643390718}
   - component: {fileID: 1643390716}
   - component: {fileID: 1643390717}
-  - component: {fileID: 1643390719}
   - component: {fileID: 1643390720}
   m_Layer: 0
   m_Name: Game Modes
@@ -5945,7 +5944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchMonth: 3
-  launchDay: 19
+  launchDay: 2
 --- !u!114 &1643390717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5982,6 +5981,12 @@ MonoBehaviour:
       - {fileID: 7508632882225528069, guid: 240b0786cc5b257438d6686ad87b826e, type: 3}
       - {fileID: 7508632882225528069, guid: d8bf6c6b15c371746b28b5bbb95103f3, type: 3}
       - {fileID: 7508632882225528069, guid: 162ede7cb6886a648883a6e38be3014c, type: 3}
+    - category: 2
+      min: 3
+      max: 5
+      wedges:
+      - {fileID: 7508632882225528069, guid: b1bb894ccf98aef44b397a0dd1e531bc, type: 3}
+      - {fileID: 7508632882225528069, guid: ebf65fe53da73674082abf2f26010dee, type: 3}
 --- !u!114 &1643390718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5995,56 +6000,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultWheelSeed: {fileID: 1643390717}
-  expertWheelSeed: {fileID: 1643390719}
+  expertWheelSeed: {fileID: 0}
   wedgeSpawner: {fileID: 142446063}
---- !u!114 &1643390719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1643390714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2362eaf81c75abd458b7ead228d892c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  seedName: Expert Mode
-  seedData:
-    Number: 0
-    ReturnTo1: 1
-    wedgeCategories:
-    - category: 0
-      min: 8
-      max: 12
-      wedges:
-      - {fileID: 7508632882225528069, guid: 7d0a895b0b4ccb445b207b8b50335814, type: 3}
-      - {fileID: 7508632882225528069, guid: a79d5e85ea6f3f74aa06b16b26c56ca8, type: 3}
-      - {fileID: 7508632882225528069, guid: 5213282b5b2163d48814b5873258e2fd, type: 3}
-      - {fileID: 7508632882225528069, guid: 2f25b4ae15331f04e8497752a2b4be2c, type: 3}
-      - {fileID: 7508632882225528069, guid: 0019de98828ad624aa7a6591b1897020, type: 3}
-      - {fileID: 7508632882225528069, guid: 8e193d86bc164d24f8fd1bae953e2633, type: 3}
-      - {fileID: 7508632882225528069, guid: eae4a08925304234f9f5b43b75242f9b, type: 3}
-    - category: 1
-      min: 5
-      max: 7
-      wedges:
-      - {fileID: 7508632882225528069, guid: 1c5154e952b10e348a2dcf4d46122558, type: 3}
-      - {fileID: 7508632882225528069, guid: 240b0786cc5b257438d6686ad87b826e, type: 3}
-      - {fileID: 7508632882225528069, guid: d8bf6c6b15c371746b28b5bbb95103f3, type: 3}
-      - {fileID: 7508632882225528069, guid: 162ede7cb6886a648883a6e38be3014c, type: 3}
-    - category: 2
-      min: 4
-      max: 6
-      wedges:
-      - {fileID: 7508632882225528069, guid: ebf65fe53da73674082abf2f26010dee, type: 3}
-      - {fileID: 7508632882225528069, guid: b1bb894ccf98aef44b397a0dd1e531bc, type: 3}
-    - category: 3
-      min: 5
-      max: 7
-      wedges:
-      - {fileID: 7508632882225528069, guid: fb0a1ce7f7b7e1147873af3a1987e332, type: 3}
-      - {fileID: 7508632882225528069, guid: 09a197e2e387650408144a99d96908ce, type: 3}
 --- !u!114 &1643390720
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -134,7 +134,6 @@ public class WedgeSpawner : MonoBehaviour
         GameObject wedge = w.wedges[Random.Range(0, w.wedges.Count)];
         int wedgeIndex = wedge.name[wedge.name.Length - 1] - '0'; // Get the corresponding database index for the wedge
         // WEDGE FORMAT: NAME_INDEX (Ex: Standard_1)
-        Debug.Log(wedge.name + " " + wedgeIndex);
 
         List<GameObject> wedgePool = PooledWedges[(int)w.category][wedgeIndex];
         for (int i = 0; i < wedgePool.Count; i++)
@@ -146,7 +145,6 @@ public class WedgeSpawner : MonoBehaviour
             }
         }
 
-        Debug.Log("creating wedge " + wedge.name);
         // None available, create new
         GameObject temp = Instantiate(wedge, wheelObject);
         temp.SetActive(false);

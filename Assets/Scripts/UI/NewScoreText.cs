@@ -15,6 +15,7 @@ public class NewScoreText : MonoBehaviour
         animator = GetComponentInParent<Animator>();
         GameManager.newGame += OnNewGame;
         resetYPos = transform.position.y;
+        gameObject.SetActive(false);
     }
 
     private void Update()
@@ -30,6 +31,13 @@ public class NewScoreText : MonoBehaviour
 
     public void ShowNewText()
     {
+        gameObject.SetActive(true);
         animator.SetTrigger("Fade");
+    }
+
+    private IEnumerator TurnOffText()
+    {
+        yield return new WaitForSeconds(5f);
+        gameObject.SetActive(false);
     }
 }
