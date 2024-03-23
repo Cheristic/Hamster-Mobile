@@ -133,12 +133,12 @@ GameObject:
   m_Component:
   - component: {fileID: 22642649}
   m_Layer: 0
-  m_Name: Touch Background
+  m_Name: Fast Fall Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &22642649
 Transform:
   m_ObjectHideFlags: 0
@@ -304,7 +304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &111110700
 RectTransform:
   m_ObjectHideFlags: 0
@@ -491,22 +491,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - collide: {fileID: 498625135}
-    onTouch:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 382889043}
-          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-          m_MethodName: StartGame
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - collide: {fileID: 1978882160}
     onTouch:
       m_PersistentCalls:
@@ -519,6 +503,22 @@ MonoBehaviour:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - collide: {fileID: 498625135}
+    onTouch:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 382889043}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: StartGame
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -1430,7 +1430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8ca486618663c428dded9cf4b2066f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TouchBackground: {fileID: 22642649}
+  FastFallZone: {fileID: 22642649}
 --- !u!114 &382889046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1460,7 +1460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: d3150d383d407244694f0d206458b5f1, type: 2}
-  touchBackground: {fileID: 22642648}
+  FastFallZone: {fileID: 22642648}
 --- !u!1 &383891612
 GameObject:
   m_ObjectHideFlags: 0
@@ -2291,7 +2291,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   zoomTime: 1
   zoomedXPos: 4
-  TouchBackground: {fileID: 22642649}
+  FastFallZone: {fileID: 22642649}
 --- !u!114 &519420035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2299,7 +2299,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
@@ -4128,7 +4128,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enable Fast Fall
+  m_text: Fast Fall Zone
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8bd67948dfc4c2347a0ceef74ff89d7e, type: 2}
   m_sharedMaterial: {fileID: -7313117226432236839, guid: 8bd67948dfc4c2347a0ceef74ff89d7e, type: 2}
@@ -5689,7 +5689,7 @@ GameObject:
   - component: {fileID: 1618442791}
   - component: {fileID: 1618442790}
   m_Layer: 0
-  m_Name: touch bg image
+  m_Name: Fast Fall Zone Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5966,13 +5966,13 @@ MonoBehaviour:
       min: 8
       max: 12
       wedges:
+      - {fileID: 7508632882225528069, guid: eae4a08925304234f9f5b43b75242f9b, type: 3}
       - {fileID: 7508632882225528069, guid: 7d0a895b0b4ccb445b207b8b50335814, type: 3}
       - {fileID: 7508632882225528069, guid: a79d5e85ea6f3f74aa06b16b26c56ca8, type: 3}
       - {fileID: 7508632882225528069, guid: 5213282b5b2163d48814b5873258e2fd, type: 3}
       - {fileID: 7508632882225528069, guid: 2f25b4ae15331f04e8497752a2b4be2c, type: 3}
       - {fileID: 7508632882225528069, guid: 0019de98828ad624aa7a6591b1897020, type: 3}
       - {fileID: 7508632882225528069, guid: 8e193d86bc164d24f8fd1bae953e2633, type: 3}
-      - {fileID: 7508632882225528069, guid: eae4a08925304234f9f5b43b75242f9b, type: 3}
     - category: 1
       min: 5
       max: 7
@@ -6732,7 +6732,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1883174903}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff6f0709ba6a314479a9962b2bca4f28, type: 3}
+  m_Script: {fileID: 11500000, guid: eb66cb338656eb941a1fb7d4fcbc2afa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1912738271
@@ -7427,7 +7427,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.51100004}
-  m_AnchoredPosition: {x: 73.1, y: 8.841171}
+  m_AnchoredPosition: {x: 60.73, y: 8.841171}
   m_SizeDelta: {x: 20, y: 18.78233}
   m_Pivot: {x: 0.1392098, y: 1}
 --- !u!114 &2057672907
@@ -7478,8 +7478,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 382889047}
-        m_TargetAssemblyTypeName: OptionsHandler, Assembly-CSharp
-        m_MethodName: SetFastFall
+        m_TargetAssemblyTypeName: SettingsHandler, Assembly-CSharp
+        m_MethodName: EnableFastFallZone
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7489,7 +7489,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &2078852140
 GameObject:
   m_ObjectHideFlags: 0

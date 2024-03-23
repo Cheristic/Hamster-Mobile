@@ -8,10 +8,13 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Main { get; private set; }
     public HamsterInput input;
-    public static event Action<Vector2, float> OnTouchStart;
-    public static event Action<Vector2, float> OnTouchEnd;
-    public Transform TouchBackground;
-    internal float touchDividerLine;
+    public static event Action OnTouchStart;
+    public static event Action OnTouchEnd;
+
+    // 
+    public Transform FastFallZone;
+    internal float fastFallDividerLine;
+    internal bool fastFallZoneEnabled;
     private void Awake()
     {
         if (Main != null && Main != this)
@@ -22,7 +25,7 @@ public class InputManager : MonoBehaviour
         {
             Main = this;
         }
-        input = new();   
+        input = new();
     }
 
     private void OnEnable()
@@ -38,26 +41,29 @@ public class InputManager : MonoBehaviour
     {
         input.Touch.TouchPress.started += ctx => StartTouch(ctx);
         input.Touch.TouchPress.canceled += ctx => EndTouch(ctx);
-        touchDividerLine = TouchBackground.position.y; // After Camera manager sets position
+        DisableFastFallZone(); // After Camera manager sets position
     }
 
     private void StartTouch(InputAction.CallbackContext c)
     {
-        OnTouchStart?.Invoke(input.Touch.TouchPosition.ReadValue<Vector2>(), (float)c.startTime);
+        OnTouchStart?.Invoke();
     }
     private void EndTouch(InputAction.CallbackContext c)
     {
-        OnTouchEnd?.Invoke(input.Touch.TouchPosition.ReadValue<Vector2>(), (float)c.time);
+        OnTouchEnd?.Invoke();
     }
 
-    public void SetTouchLine()
+
+    public void EnableFastFallZone()
     {
-        touchDividerLine = TouchBackground.position.y;
+        fastFallDividerLine = FastFallZone.position.y;
+        fastFallZoneEnabled = true;
     }
 
-    public void DisableTouchLine()
+    public void DisableFastFallZone()
     {
-        touchDividerLine = -500;
+        fastFallDividerLine = -500;
+        fastFallZoneEnabled = false;
     }
 
 }

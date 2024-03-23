@@ -24,7 +24,7 @@ public class SettingsHandler : MonoBehaviour
     public void SetZoomedMode(bool mode) { zoomedMode = mode; }
 
     public AudioMixer mixer;
-    public GameObject touchBackground;
+    public GameObject FastFallZone;
 
     public void SetVolumeLevel(float vol)
     {
@@ -38,19 +38,17 @@ public class SettingsHandler : MonoBehaviour
         }
     }
 
-    public void SetExpertMode(bool enable)
+    public void EnableFastFallZone(bool enable)
     {
         if (enable)
         {
-            InputManager.Main.SetTouchLine();
-            touchBackground.SetActive(true);
-            GameModeSelector.Main.ChooseExpertSeed();
+            InputManager.Main.EnableFastFallZone();
+            FastFallZone.SetActive(true);
         }
         else
         {
-            InputManager.Main.DisableTouchLine();
-            touchBackground.SetActive(false);
-            GameModeSelector.Main.ChooseDefaultSeed();
+            InputManager.Main.DisableFastFallZone();
+            FastFallZone.SetActive(false);
         }
     }
 }

@@ -14,13 +14,6 @@ public class GameModeSelector : MonoBehaviour
     [SerializeField] WedgeSpawner wedgeSpawner;
     internal DailyHamsterdle dailyHamsterdle;
 
-    public enum SelectedMode
-    {
-        Default,
-        Expert
-    }
-
-    internal SelectedMode selectedMode;
     bool hamsterdleSelected;
 
     private void Awake()
@@ -33,18 +26,11 @@ public class GameModeSelector : MonoBehaviour
         // Start with default game
         ChooseDefaultSeed();
         dailyHamsterdle = GetComponent<DailyHamsterdle>();
-        hamsterdleSelected = false;
     }
     public void ChooseDefaultSeed()
     {
         wedgeSpawner.seed = defaultWheelSeed.seedData;
-        selectedMode = SelectedMode.Default;
-    }
-    public void ChooseExpertSeed()
-    {
-        wedgeSpawner.seed = expertWheelSeed.seedData;
-        selectedMode = SelectedMode.Expert;
-
+        hamsterdleSelected = false;
     }
 
     public async void RunDailyHamstedle()
@@ -52,11 +38,8 @@ public class GameModeSelector : MonoBehaviour
         // If hit again, return to normal mode
         if (hamsterdleSelected)
         {
-            if (selectedMode == SelectedMode.Default) ChooseDefaultSeed();
-            else if (selectedMode == SelectedMode.Expert) ChooseExpertSeed();
-            hamsterdleSelected = false;
-            Debug.Log("Hamsterdle unselected for " + selectedMode.ToString());
-
+            ChooseDefaultSeed();
+            Debug.Log("Hamsterdle unselected");
             return;
         }
 

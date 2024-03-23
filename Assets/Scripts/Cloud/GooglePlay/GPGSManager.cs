@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
+#if UNITY_ANDROID
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
-using UnityEngine.UI;
 
 public class GPGSManager : MonoBehaviour
 {
@@ -92,3 +91,4 @@ public class GPGSManager : MonoBehaviour
     }
 
 }
+#endif

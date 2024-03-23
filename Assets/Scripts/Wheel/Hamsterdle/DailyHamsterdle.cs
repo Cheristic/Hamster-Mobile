@@ -75,6 +75,7 @@ public class DailyHamsterdle : MonoBehaviour
 
         if (workingSeed == null) // No seed found in data, generate new seed
         {
+            Random.InitState((int)currDate.Ticks);
             Debug.Log("Generating new seed");
             workingSeed = GenerateWedgeSeedData();
             // Add seed's current date + number to data holder
@@ -94,16 +95,21 @@ public class DailyHamsterdle : MonoBehaviour
         data.wedgeCategories = new();
 
         WedgeCategory standard = GenerateSeededCategory(WedgeCategoryName.Standard, .80f, 1, 12, 4, 15);
-        if (!standard.IsUnityNull()) data.wedgeCategories.Add(standard);
+        if (standard != null) data.wedgeCategories.Add(standard);
 
         WedgeCategory beam = GenerateSeededCategory(WedgeCategoryName.Beam, .50f, 2, 7, 4, 10);
-        if (!beam.IsUnityNull()) data.wedgeCategories.Add(beam);
+        if (beam != null) data.wedgeCategories.Add(beam);
+
+        WedgeCategory divided = GenerateSeededCategory(WedgeCategoryName.Divided, .50f, 1, 3, 3, 7);
+        if (divided != null) data.wedgeCategories.Add(divided);
 
         if (data.wedgeCategories.Count == 0) // If by some statistical improbability, none are chosen, choose standard
         {
             standard = GenerateSeededCategory(WedgeCategoryName.Standard, 1f, 1, 12, 4, 15);
-            if (!standard.IsUnityNull()) data.wedgeCategories.Add(standard);
+            data.wedgeCategories.Add(standard);
         }
+
+        data.ReturnTo1 = Random.Range(0, 2) == 1 ? true : false; // 50% chance for either
 
         return data;
     }

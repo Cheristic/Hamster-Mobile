@@ -40,11 +40,8 @@ public class WedgeSpawner : MonoBehaviour
         if (seed.Number == 0) // Not Hamsterdle
         {
             Random.InitState((int)DateTime.Now.Ticks);
-            Debug.Log("Regular " + (int)DateTime.Now.Ticks);
         } else // Is Hamsterdle
         {
-            Debug.Log(seed.Date.Ticks);
-            Debug.Log((int)(seed.Date.Ticks));
             Random.InitState((int)(seed.Date.Ticks));
         }
         StartCoroutine(SpawnWedge());
@@ -80,7 +77,7 @@ public class WedgeSpawner : MonoBehaviour
                         {
                             // Ensure a different wedge category is chosen
                             newWedgeCategory = Random.Range(1, seed.wedgeCategories.Count);
-                            // Change this part later with gamemodes
+                            
                         } while (newWedgeCategory == (int)currWedgeChoice.category);
                         // Choose wedge category and number of consecutive wedges of category to spawn
                         currWedgeChoice = seed.wedgeCategories[newWedgeCategory];
@@ -97,8 +94,8 @@ public class WedgeSpawner : MonoBehaviour
                     int newWedgeCategory;
                     do
                     {
-                        newWedgeCategory = Random.Range(1, seed.wedgeCategories.Count);
-                        // Change this part later with gamemodes
+                        newWedgeCategory = Random.Range(0, seed.wedgeCategories.Count);
+                        
                     } while (newWedgeCategory == (int)currWedgeChoice.category);
                     // Choose wedge category and number of consecutive wedges of category to spawn
                     currWedgeChoice = seed.wedgeCategories[newWedgeCategory];

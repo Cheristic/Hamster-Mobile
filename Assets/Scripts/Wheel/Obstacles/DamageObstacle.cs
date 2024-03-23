@@ -23,8 +23,7 @@ public class DamageObstacle : MonoBehaviour
         yield return new WaitUntil(() => transform.position.x > 0);
         _collider.enabled = false;
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Hamster"))
         {

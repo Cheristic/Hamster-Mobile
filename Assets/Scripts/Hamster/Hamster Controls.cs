@@ -21,10 +21,11 @@ public class HamsterControls : MonoBehaviour
     Rigidbody2D rb;
     Collider2D collide;
     InputAction TouchPress;
+    InputAction TouchPosition;
 
     // Misc variables
     bool CanFall = false;
-    bool IsJumpHolding = false;
+    bool IsHolding = false;
     public static event Action HamsterFall;
     Vector3 leftGroundedChecker = Vector3.zero;
     Vector3 rightGroundedChecker = Vector3.zero;
@@ -42,6 +43,7 @@ public class HamsterControls : MonoBehaviour
         GameManager.newGame += OnNewGame;
 
         TouchPress = InputManager.Main.input.Touch.TouchPress;
+        TouchPosition = InputManager.Main.input.Touch.TouchPosition;
 
         StartCoroutine(HamsterReadyChecker());
     }
@@ -70,56 +72,75 @@ public class HamsterControls : MonoBehaviour
         TriggerHamsterReady?.Invoke();
     }
 
-    private void StartTouch(Vector2 pos, float time)
+    private void StartTouch()
     {
         HandleInput();
-        StartCoroutine(HampsterJumpHold());
+        StartCoroutine(HoldingChecks());
     }
 
 
-    // Return true when jump successfully, false otherwise
+    // The bool returned is just for title screen
     public bool HandleInput()
     {
+        float touchYPos = Camera.main.ScreenToWorldPoint(TouchPosition.ReadValue<Vector2>()).y;
 
-        if (IsGrounded)
+        if (touchYPos >= InputManager.Main.fastFallDividerLine) // ABOVE FAST FALL LINE - Will always be above line with fast fall zone disabled
         {
-            HampsterJump();
-            return true;
-        }
-        else
+            if (IsGrounded)
+            {
+                ExecuteJump();
+                return true;
+            }
+            else
+            {
+                if (CanFall && !InputManager.Main.fastFallZoneEnabled)
+                {
+                   TryFall();
+                }
+                return false;
+            }
+        } else // BELOW FAST FALL LINE
         {
             if (CanFall)
             {
                 TryFall();
             }
-            //StartCoroutine(BufferJump());
-            return false;
+            return true;
         }
     }
+    private IEnumerator HoldingChecks()
+    {
+        if (IsHolding) yield break;
+        IsHolding = true;
 
-    private void HampsterJump()
+        while (GameManager.Main.gameRunning && TouchPress.inProgress)
+        {
+            float touchYPos = Camera.main.ScreenToWorldPoint(TouchPosition.ReadValue<Vector2>()).y;
+            if (touchYPos >= InputManager.Main.fastFallDividerLine) // Input to jump when in jump zone
+            {
+                if (rb.velocity.y <= 0 && IsGrounded)
+                {
+                    ExecuteJump();
+                }
+            }
+            else
+            {
+                if (CanFall) // Input to fall when finger slides into fast fall zone
+                {
+                    TryFall();
+                }
+            }
+            yield return null;
+        }
+
+        IsHolding = false;
+    }
+
+    private void ExecuteJump()
     {
         CanFall = true;
         rb.velocity = new Vector2(0, jumpHeight);
         StartCoroutine(JumpBoost());
-    }
-
-    // Input for when player holds down screen and waits for hampster to land in order to buffer jump
-    private IEnumerator HampsterJumpHold()
-    {
-        if (IsJumpHolding) yield break;
-
-        IsJumpHolding = true;
-
-        while (GameManager.Main.gameRunning && TouchPress.inProgress)
-        {
-            if (rb.velocity.y <= 0 && IsGrounded)
-            {
-                HampsterJump();
-            }
-            yield return null;
-        }
-        IsJumpHolding = false;
     }
 
     private IEnumerator JumpBoost()
@@ -134,33 +155,46 @@ public class HamsterControls : MonoBehaviour
         }
     }
 
+    /*
+    // Input to wait if player originally jumps but slides finger into zone
+    private IEnumerator WaitForFastFallZone()
+    {
+        while (GameManager.Main.gameRunning && TouchPress.inProgress)
+        {
+            float touchYPos = Camera.main.ScreenToWorldPoint(TouchPosition.ReadValue<Vector2>()).y;
+            if (touchYPos < InputManager.Main.fastFallDividerLine)
+            {
+                TryFall();
+            }
+            yield return null;
+        }
+    }
+
+    // Input for when player holds down screen and waits for hampster to land in order to buffer jump
+    private IEnumerator PreHoldJump()
+    {
+        if (IsJumpHolding) yield break;
+
+        IsJumpHolding = true;
+
+        while (GameManager.Main.gameRunning && TouchPress.inProgress)
+        {
+            if (rb.velocity.y <= 0 && IsGrounded && )
+            {
+                ExecuteJump();
+            }
+            yield return null;
+        }
+        IsJumpHolding = false;
+    }*/
+
+
     private void TryFall()
     {
         rb.velocity = new Vector2(rb.velocity.x, -jumpHeight);
-        Debug.Log("ham fall");
         HamsterFall?.Invoke();
         CanFall = false;
     }
-
-    /*
-    private IEnumerator BufferJump()
-    {
-        float time = 0f;
-        while (!IsGrounded)
-        {
-            if (time >= bufferTime)
-            {
-                // If player cannot meet conditions within buffer window, cancel input
-                yield break;
-            }
-            time += Time.deltaTime;
-            yield return new WaitForSeconds(0.01f);
-        }
-        Debug.Log("Buffer Jump " + time);
-        if (time >= bufferTime) yield break;
-        // if conditions are met, call HandleInput() once more to activate it
-        HandleInput();
-    }*/
 
 
     private void FixedUpdate()

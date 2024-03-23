@@ -15,7 +15,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] float zoomedXPos;
 
     [Header("Links")]
-    [SerializeField] Transform TouchBackground;
+    [SerializeField] Transform FastFallZone;
     void Awake()
     {
         _camera = GetComponent<Camera>();
@@ -29,7 +29,7 @@ public class CameraManager : MonoBehaviour
 
 
         // Place halfway between bottom of screen and bottom of wheel
-        TouchBackground.position = new Vector2(0, (-9 - baseView)/2 + 0.5f);
+        FastFallZone.position = new Vector2(0, (-9 - baseView)/2 + 0.5f);
     }
 
     IEnumerator zooming = null;

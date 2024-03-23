@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class TouchMenu : MonoBehaviour
@@ -17,9 +18,12 @@ public class TouchMenu : MonoBehaviour
 
     public TouchBox[] touchBoxes;
 
+    InputAction TouchPosition;
+
     void Start()
     {
         collide = GetComponent<Collider2D>();
+        TouchPosition = InputManager.Main.input.Touch.TouchPosition;
     }
 
     private void OnEnable()
@@ -31,9 +35,9 @@ public class TouchMenu : MonoBehaviour
         InputManager.OnTouchEnd -= CheckTouch;
     }
 
-    private void CheckTouch(Vector2 pos, float time)
+    private void CheckTouch()
     {
-        Ray ray = Camera.main.ScreenPointToRay(pos);
+        Ray ray = Camera.main.ScreenPointToRay(TouchPosition.ReadValue<Vector2>());
         foreach (var box in touchBoxes)
         {
             // If player touches box, invoke event

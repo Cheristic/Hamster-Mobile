@@ -34,23 +34,23 @@ public class WedgeObject : MonoBehaviour
 
     IEnumerator CheckForRotation()
     {
-        yield return new WaitUntil(() => transform.rotation.z < -.999);
+        yield return new WaitUntil(() => transform.rotation.z > .999);
         foreach (var ren in renderers)
         {
             ren.sortingLayerID = -1308082041; // Place all obstacles in maskable layer
         }
-        yield return new WaitUntil(() => transform.rotation.z > rotationTilCleared1);
+        yield return new WaitUntil(() => transform.rotation.z < -rotationTilCleared1);
         ScoreManager.Main.IncreaseScore();
         if (rotationTilCleared2 != 0) { // For obstacles long enough to reward 2
-            yield return new WaitUntil(() => transform.rotation.z > rotationTilCleared2);
+            yield return new WaitUntil(() => transform.rotation.z < -rotationTilCleared2);
             ScoreManager.Main.IncreaseScore();
         }
-        yield return new WaitUntil(() => transform.rotation.z > rotationTilSwitchLayer);
+        yield return new WaitUntil(() => transform.rotation.z < -rotationTilSwitchLayer);
         foreach (var ren in renderers)
         {
             ren.sortingLayerID = -33730133; // Place all obstacles in maskable layer
         }
-        yield return new WaitUntil(() => transform.rotation.z > .999);
+        yield return new WaitUntil(() => transform.rotation.z < -.999);
         Despawn();
     }
 
