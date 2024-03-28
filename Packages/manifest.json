@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.apple.unityplugin.core": "file:../ExternalPackages/com.apple.unityplugin.core-3.1.0.tgz",
+    "com.apple.unityplugin.gamekit": "file:../ExternalPackages/com.apple.unityplugin.gamekit-2.2.0.tgz",
     "com.unity.adaptiveperformance.samsung.android": "5.0.0",
     "com.unity.addressables": "1.21.20",
     "com.unity.collab-proxy": "2.2.0",
@@ -10,6 +12,8 @@
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.inputsystem": "1.7.0",
     "com.unity.nuget.newtonsoft-json": "3.2.1",
+    "com.unity.services.authentication": "3.3.0",
+    "com.unity.services.leaderboards": "2.0.0",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.7.6",

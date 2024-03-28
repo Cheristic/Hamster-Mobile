@@ -36,6 +36,16 @@ public class ScoreManager : MonoBehaviour
             highscore = score;
             newScoreText.ShowNewText();
         }
+
+        // Update score
+        if (GameModeSelector.Main.hamsterdleSelected)
+        {
+            HamsterdleManager.Main.AddScoreToHamsterdle();
+        } else
+        {
+            CloudServicesManager.cloud.unityServices.AddScoreToHighScore();
+            CloudServicesManager.cloud.platformMan.AddScore();
+        }
     }
 
     private void OnNewGame()

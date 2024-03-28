@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Threading.Tasks;
+using TMPro;
 
 public class GameModeSelector : MonoBehaviour
 {
     public static GameModeSelector Main { get; private set; }
     [Header("Links")]
     [SerializeField] WheelSeed defaultWheelSeed;
-    [SerializeField] WheelSeed expertWheelSeed;
     [SerializeField] WedgeSpawner wedgeSpawner;
-    internal DailyHamsterdle dailyHamsterdle;
+    internal DailyHamsterdleGenerator dailyHamsterdle;
 
-    bool hamsterdleSelected;
+    internal bool hamsterdleSelected;
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class GameModeSelector : MonoBehaviour
 
         // Start with default game
         ChooseDefaultSeed();
-        dailyHamsterdle = GetComponent<DailyHamsterdle>();
+        dailyHamsterdle = GetComponent<DailyHamsterdleGenerator>();
     }
     public void ChooseDefaultSeed()
     {
@@ -33,38 +33,10 @@ public class GameModeSelector : MonoBehaviour
         hamsterdleSelected = false;
     }
 
-    public async void RunDailyHamstedle()
+    public void ChooseDailyHamsterdle(WedgeSeedData d)
     {
-        // If hit again, return to normal mode
-        if (hamsterdleSelected)
-        {
-            ChooseDefaultSeed();
-            Debug.Log("Hamsterdle unselected");
-            return;
-        }
-
-        /*DailyHamsterdle.HamsterdleStatus status = CloudManager.cloud.HasCompletedDaily();
-
-        if (status == DailyHamsterdle.HamsterdleStatus.CannotConnectToGoogle)
-        {
-            Debug.LogError("Cannot connect to Google servers");
-            return;
-        }
-        if (status == DailyHamsterdle.HamsterdleStatus.HasCompletedHamsterdle)
-        {
-            Debug.Log("Already completed today's hamsterdle");
-            return;
-        }*/
-        // Has not completed hamsterdle, proceed
-
-        WedgeSeedData d = await dailyHamsterdle.RetrieveDailySeed();
-        if (d == null)
-        {
-            Debug.LogError("Not connected to Internet or API servers down");
-            return;
-        }
-        hamsterdleSelected = true;
         wedgeSpawner.seed = d;
+        hamsterdleSelected = true;
     }
 
 }

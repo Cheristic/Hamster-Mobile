@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
         }
         gameRunning = false;
         Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0; // This probably does nothing but whatever
     }
 
     public static event Action gameStart;

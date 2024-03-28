@@ -1,55 +1,160 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+using Unity.Mathematics;
+
+
+
+
+
+
 #if UNITY_ANDROID
+
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 
-public class GPGSManager : MonoBehaviour
+#endif
+
+
+public class GPGSManager : PlatformManager
 {
-    bool connectedToGooglePlay;
-    void Awake()
+#if UNITY_ANDROID
+
+    string AuthorizationToken;
+
+    public override void Activate()
     {
+        Debug.Log("Activating PlayGamesPlatform");
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
-        GameManager.gameEnd += OnGameEnd;
     }
+    public override Task<bool> GetAuthenticationResults()
+    {
+        Debug.Log("GetAuthenticationResults() started");
+        var tcs = new TaskCompletionSource<bool>();
 
-
-    private void Start()
-    {
-        LoginToGooglePlay(); // Also authenticate every time user clicks Daily button
-    }
-    private void LoginToGooglePlay()
-    {
-        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
-    }
-    private void ProcessAuthentication(SignInStatus status)
-    {
-        if (status == SignInStatus.Success)
+        PlayGamesPlatform.Instance.Authenticate((status) =>
         {
-            connectedToGooglePlay = true;
-            
-            PlayGamesPlatform.Instance.LoadScores(
-                GPGSIds.leaderboard_hamster_high_score,
-                LeaderboardStart.PlayerCentered,
-                1,
-                LeaderboardCollection.Public,
-                LeaderboardTimeSpan.AllTime,
-                (LeaderboardScoreData data) =>
+            if (status == SignInStatus.Success)
+            {
+
+                PlayGamesPlatform.Instance.LoadScores(
+                    GPGSIds.leaderboard_hamster_high_score,
+                    LeaderboardStart.PlayerCentered,
+                    1,
+                    LeaderboardCollection.Public,
+                    LeaderboardTimeSpan.AllTime,
+                    (LeaderboardScoreData data) =>
+                    {
+                        ScoreManager.Main.highscore = (int)data.PlayerScore.value;
+                    }
+                );
+
+                ScoreManager.Main.highscoreEnabled = true; // Only update high score if connected to google
+                connectedToPlatform = true;
+            }
+            else
+            {
+                Debug.Log("GPGSManager failed to Authenticate");
+                connectedToPlatform = false;
+                AuthorizationToken = null;
+            }
+            tcs.TrySetResult(connectedToPlatform);
+            Debug.Log("Returning GetAuthenticationResults()");
+        });
+
+        Debug.Log("Done authenticating GPGS status: " + connectedToPlatform);
+        return tcs.Task;
+    }
+
+    public override Task<bool> ManuallyAuthenticate()
+    {
+        Debug.Log("ManuallyAuthenticate() started");
+        var tcs = new TaskCompletionSource<bool>();
+
+        PlayGamesPlatform.Instance.ManuallyAuthenticate((status) =>
+        {
+            if (status == SignInStatus.Success)
+            {
+
+                PlayGamesPlatform.Instance.RequestServerSideAccess(true, code =>
                 {
-                    ScoreManager.Main.highscore = (int)data.PlayerScore.value;
+                    AuthorizationToken = code;
                 });
-            ScoreManager.Main.highscoreEnabled = true; // Only update high score if connected to google
-        }
-        else connectedToGooglePlay = false;
+                Debug.Log(AuthorizationToken + " " + Time.time);
+
+
+                PlayGamesPlatform.Instance.LoadScores(
+                    GPGSIds.leaderboard_hamster_high_score,
+                    LeaderboardStart.PlayerCentered,
+                    1,
+                    LeaderboardCollection.Public,
+                    LeaderboardTimeSpan.AllTime,
+                    (LeaderboardScoreData data) =>
+                    {
+                        ScoreManager.Main.highscore = (int)data.PlayerScore.value;
+                    }
+                );
+
+                ScoreManager.Main.highscoreEnabled = true; // Only update high score if connected to google
+                connectedToPlatform = true;
+            }
+            else
+            {
+                Debug.Log("GPGSManager failed to Authenticate");
+                connectedToPlatform = false;
+                AuthorizationToken = null;
+            }
+            tcs.TrySetResult(connectedToPlatform);
+            Debug.Log("Returning ManuallyAuthenticate()");
+        });
+
+        Debug.Log("Done authenticating GPGS status: " + connectedToPlatform);
+        return tcs.Task;
     }
 
-    private void OnGameEnd()
-    {     
-        if (connectedToGooglePlay)
+    public override async Task<bool> AuthenticateWithUnity()
+    {
+        Debug.Log("Attempting to sign into Unity Services with Google Play");
+        if (!await GetAuthorizationToken()) return false;
+        return await CloudServicesManager.cloud.unityServices.SignInWithGooglePlayGamesAsync(AuthorizationToken);
+    }
+
+    private Task<bool> GetAuthorizationToken()
+    {
+        var tcs = new TaskCompletionSource<bool>();
+        PlayGamesPlatform.Instance.RequestServerSideAccess(true, code =>
         {
-            Social.ReportScore(ScoreManager.Main.score, GPGSIds.leaderboard_hamster_high_score, UpdateLeaderboard);
+            AuthorizationToken = code;
+            Debug.Log("Got authorization code " + code);
+            if (code == null) tcs.TrySetResult(false);
+            else tcs.TrySetResult(true);
+
+        });
+
+        return tcs.Task;
+    }
+
+    public override bool IsConnected()
+    {
+        return connectedToPlatform;
+    }
+
+
+    public override void AddScore()
+    {     
+        if (connectedToPlatform)
+        {
+            if (GameModeSelector.Main.hamsterdleSelected)
+            {
+                Social.ReportScore(ScoreManager.Main.score, GPGSIds.leaderboard_daily_hamsterdle, UpdateLeaderboard);
+            } else
+            {
+                Social.ReportScore(ScoreManager.Main.score, GPGSIds.leaderboard_hamster_high_score, UpdateLeaderboard);
+            }
         }
     }
 
@@ -60,35 +165,13 @@ public class GPGSManager : MonoBehaviour
     }
 
     // Called by CloudManager
-    public void ShowLeaderboard()
+    public override void ShowLeaderboard()
     {
-        if (connectedToGooglePlay)
+        if (connectedToPlatform)
         {
             Social.ShowLeaderboardUI();
         }
     }
 
-    public DailyHamsterdle.HamsterdleStatus HasCompletedDaily()
-    {
-        LoginToGooglePlay(); // Need to check sync issues
-        if (connectedToGooglePlay)
-        {
-            int count = 0;
-            PlayGamesPlatform.Instance.LoadScores(
-                GPGSIds.leaderboard_daily_hamsterdle,
-                LeaderboardStart.PlayerCentered,
-                1,
-                LeaderboardCollection.Public,
-                LeaderboardTimeSpan.Daily,
-                (data) =>
-                {
-                    count = (int)data.ApproximateCount;
-                });
-            if (count == 0) return DailyHamsterdle.HamsterdleStatus.HasNotCompletedHamsterdle;
-            else return DailyHamsterdle.HamsterdleStatus.HasCompletedHamsterdle;
-        }
-        return DailyHamsterdle.HamsterdleStatus.CannotConnectToGoogle;
-    }
-
-}
 #endif
+}

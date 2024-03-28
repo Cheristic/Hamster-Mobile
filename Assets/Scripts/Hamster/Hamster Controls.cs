@@ -25,7 +25,6 @@ public class HamsterControls : MonoBehaviour
 
     // Misc variables
     bool CanFall = false;
-    bool IsHolding = false;
     public static event Action HamsterFall;
     Vector3 leftGroundedChecker = Vector3.zero;
     Vector3 rightGroundedChecker = Vector3.zero;
@@ -74,6 +73,7 @@ public class HamsterControls : MonoBehaviour
 
     private void StartTouch()
     {
+        if (InputManager.Main.fastFallZoneEnabled) CanFall = true;
         HandleInput();
         StartCoroutine(HoldingChecks());
     }
@@ -110,8 +110,6 @@ public class HamsterControls : MonoBehaviour
     }
     private IEnumerator HoldingChecks()
     {
-        if (IsHolding) yield break;
-        IsHolding = true;
 
         while (GameManager.Main.gameRunning && TouchPress.inProgress)
         {
@@ -132,8 +130,6 @@ public class HamsterControls : MonoBehaviour
             }
             yield return null;
         }
-
-        IsHolding = false;
     }
 
     private void ExecuteJump()

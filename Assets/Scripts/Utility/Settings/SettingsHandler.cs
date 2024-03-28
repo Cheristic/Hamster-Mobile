@@ -17,7 +17,6 @@ public class SettingsHandler : MonoBehaviour
         {
             Main = this;
         }
-        Debug.Log("loaded");
     }
 
     internal bool zoomedMode = false;
